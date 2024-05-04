@@ -67,7 +67,12 @@ NETHACKOPTIONS = (
     "time",
 )
 
-HACKDIR = str(importlib.resources.files("nle") / "nethackdir")
+try:
+    HACKDIR = str(importlib.resources.files("nle") / "nethackdir")
+except AttributeError:  # No files() function in Python 3.8.
+    with importlib.resources.path("nle", "nethackdir") as path:
+        HACKDIR = str(path)
+
 TTYREC_VERSION = 3
 
 
