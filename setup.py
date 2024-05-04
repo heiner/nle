@@ -111,7 +111,8 @@ extras_deps = {
         "pytest-benchmark>=3.4.1",
         "sphinx>=2.4.4",
         "sphinx-rtd-theme==0.4.3",
-        "setuptools",
+        "setuptools>=69.5.1",
+        "ruff>=0.4.3",
     ],
     "agent": ["torch>=1.3.1"],
 }
