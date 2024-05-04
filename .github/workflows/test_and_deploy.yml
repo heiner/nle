@@ -47,7 +47,7 @@ jobs:
     - name: Install from repo in test mode
       run: "pip install -e '.[dev]'"
     - name: Run tests
-      run: "python -m pytest -svx nle/tests --basetemp=nle_test_data"
+      run: "python -m pytest --import-mode=append -svx nle/tests"
 
   test_sdist:
     name: Test sdist on MacOS w/ Py3.8
@@ -78,7 +78,7 @@ jobs:
       run: |
         REPONAME=$(basename $PWD)
         pushd ..
-        python -m pytest -svx $REPONAME/nle/tests --basetemp=$REPONAME/nle_test_data
+        python -m pytest --import-mode=append -svx $REPONAME/nle/tests
         popd
     - name: Save sdist
       if: ${{ always() }}
