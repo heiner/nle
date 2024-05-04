@@ -34,3 +34,29 @@ max-attributes=50  # Maximum number of attributes for a class (see R0902).
 max-bool-expr=5  # Maximum number of boolean expressions in an if statement (see R0916).
 max-branches=15  # Maximum number of branch for function / method body.
 max-locals=30  # Maximum number of locals for function / method body.
+[tool.ruff]
+# See https://docs.astral.sh/ruff/rules/.
+extend-exclude = [
+  "third_party",
+]
+exclude = ["win/rl/nle"]
+[tool.ruff.lint]
+ignore = [
+    "B008",
+    "B905",
+    "C901",
+    "E501",
+    "E731",
+]
+select = [
+    "B",
+    "B9",
+    "C",
+    "E",
+    "F",
+    "W",
+]
+[tool.ruff.lint.flake8-comprehensions]
+allow-dict-calls-with-keyword-arguments = true
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # unused-import.

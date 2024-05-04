@@ -144,9 +144,7 @@ def add_altorg_directory(path, name, filename=nld.db.DB):
         nld.db.create_dataset(name, root, ttyrec_version=1, conn=c, commit=False)
 
         # 2. Add games from xlogfile to `games` table, then `datasets` table.
-        for xlogfile in reversed(
-            sorted(glob.iglob(str(os.path.join(path, "xlogfile.*"))))
-        ):
+        for xlogfile in sorted(glob.iglob(str(os.path.join(path, "xlogfile.*"))), reverse=True):
             sep = ":" if xlogfile.endswith(".txt") else "\t"
             game_gen = game_data_generator(xlogfile, separator=sep)
             insert_sql = f"""
@@ -162,7 +160,7 @@ def add_altorg_directory(path, name, filename=nld.db.DB):
         # 3. Find all the (unblacklisted) ttyrecs belonging to each player
         #    and all the games belonging to each player.
         with open(os.path.join(path, "blacklist.txt"), "r") as f:
-            blacklisted_ttyrecs = set(str(os.path.join(path, p)) for p in f.readlines())
+            blacklisted_ttyrecs = {str(os.path.join(path, p)) for p in f.readlines()}
 
         ttyrecs_dict = collections.defaultdict(list)
         for ttyrec in glob.iglob(path + "/*/*.ttyrec.bz2"):
@@ -264,8 +262,8 @@ def add_nledata_directory(path, name, filename=nld.db.DB):
             stem = xlogfile.replace(".xlogfile", ".*.ttyrec*.bz2")
 
             files = set(glob.iglob(stem))
-            ttyrecnames = set(f.split("/")[-1] for f in files)
-            versions = set(f.split("ttyrec")[-1].replace(".bz2", "") for f in files)
+            ttyrecnames = {f.split("/")[-1] for f in files}
+            versions = {f.split("ttyrec")[-1].replace(".bz2", "") for f in files}
             assert len(versions) == 1, "Cannot add ttyrecs with different versions"
             version = versions.pop()
 

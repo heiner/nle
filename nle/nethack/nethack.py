@@ -115,7 +115,9 @@ def _close(pynethack, dl, tempdir, warn=True):
     if tempdir is not None:
         tempdir.cleanup()
     if warn:
-        warnings.warn("nethack.Nethack instance not closed", ResourceWarning)
+        warnings.warn(
+            "nethack.Nethack instance not closed", ResourceWarning, stacklevel=2
+        )
 
 
 def tty_render(chars, colors, cursor=None):

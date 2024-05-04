@@ -234,7 +234,7 @@ class TtyrecDataset:
                 WHERE datasets.dataset_name=?
                 AND games.gameid IN (%s)"""
             meta_sql = meta_select % subselect_sql
-            sql_args = subselect_sql_args if subselect_sql_args else tuple()
+            sql_args = subselect_sql_args if subselect_sql_args else ()
             sql_args = (dataset_name,) + sql_args
 
         self._games = defaultdict(list)

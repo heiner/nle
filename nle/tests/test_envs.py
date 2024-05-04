@@ -410,7 +410,7 @@ class TestGymDynamics:
 
             if episode % 2 != 0:
                 continue
-            contents = set(str(p) for p in path.iterdir())
+            contents = {str(p) for p in path.iterdir()}
             # `contents` includes xlogfile and ttyrecs.
             assert len(contents) - 1 == episode // 2 + 1
             assert (

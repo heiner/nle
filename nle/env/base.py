@@ -428,7 +428,8 @@ class NLE(gym.Env):
             assert not done, "Game ended unexpectedly"
         else:
             warnings.warn(
-                "Not in moveloop after 1000 tries, aborting (ttyrec: %s)." % new_ttyrec
+                "Not in moveloop after 1000 tries, aborting (ttyrec: %s)." % new_ttyrec,
+                stacklevel=2,
             )
             return self.reset(wizkit_items=wizkit_items)
 
@@ -599,4 +600,6 @@ class NLE(gym.Env):
 
         if not done:
             # Somehow, the above logic failed us.
-            warnings.warn("Warning: smooth quitting of game failed, aborting.")
+            warnings.warn(
+                "Warning: smooth quitting of game failed, aborting.", stacklevel=2
+            )

@@ -820,7 +820,7 @@ class NetHackNet(nn.Module):
 
     def initial_state(self, batch_size=1):
         if not self.use_lstm:
-            return tuple()
+            return ()
         return tuple(
             torch.zeros(self.core.num_layers, batch_size, self.core.hidden_size)
             for _ in range(2)

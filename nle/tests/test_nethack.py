@@ -97,7 +97,7 @@ class TestNetHack:
         assert tmpdir.samefile(os.getcwd())
 
         if mean_sps < 15000:
-            warnings.warn("Mean sps was only %f" % mean_sps)
+            warnings.warn("Mean sps was only %f" % mean_sps, stacklevel=2)
         olddir.chdir()
         # No call to game.close() as fixture will do that for us.
 
