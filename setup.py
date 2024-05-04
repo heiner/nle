@@ -102,10 +102,7 @@ entry_points = {
 extras_deps = {
     "dev": [
         "pre-commit>=2.0.1",
-        "black>=19.10b0",
         "cmake_format>=0.6.10",
-        "flake8>=3.7",
-        "flake8-bugbear>=20.1",
         "memory-profiler>=0.60.0",
         "pytest>=6.2.5",
         "pytest-benchmark>=3.4.1",

@@ -144,7 +144,9 @@ def add_altorg_directory(path, name, filename=nld.db.DB):
         nld.db.create_dataset(name, root, ttyrec_version=1, conn=c, commit=False)
 
         # 2. Add games from xlogfile to `games` table, then `datasets` table.
-        for xlogfile in sorted(glob.iglob(str(os.path.join(path, "xlogfile.*"))), reverse=True):
+        for xlogfile in sorted(
+            glob.iglob(str(os.path.join(path, "xlogfile.*"))), reverse=True
+        ):
             sep = ":" if xlogfile.endswith(".txt") else "\t"
             game_gen = game_data_generator(xlogfile, separator=sep)
             insert_sql = f"""
