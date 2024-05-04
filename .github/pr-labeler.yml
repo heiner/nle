@@ -1,4 +1,0 @@
-enhancement: ['feature/*', 'feat/*']
-bug: "fix/*"
-chore: "chore/*"
-docs: "docs/*"
