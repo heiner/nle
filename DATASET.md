@@ -4,7 +4,7 @@ Instructions and Tutorials for the NetHack Learning Dataset
 
 ## License
 
-This data is licensed under the NetHack General Public License - based on the GPL-style BISON license. It is the license used for the game of NetHack, and can be found [here](https://github.com/facebookresearch/nle/blob/main/LICENSE).
+This data is licensed under the NetHack General Public License - based on the GPL-style BISON license. It is the license used for the game of NetHack, and can be found [here](https://github.com/heiner/nle/blob/main/LICENSE).
 
 
 ## Accessing the Dataset
@@ -120,14 +120,14 @@ $ unzip /path/to/nld-nao-dir-ac.zip -d /path/to/nld-nao
 
 ## Using the Dataset ([Colab Demo](https://colab.research.google.com/drive/1GRP15SbOEDjbyhJGMDDb2rXAptRQztUD?usp=sharing))
 
-The code needed to use the dataset will be distributed in `NLE v0.9.0`. For now it can be found on the `main` branch of [NLE](https://github.com/facebookresearch/nle). You can follow the instructions to install [there](https://github.com/facebookresearch/nle), or try the below.
+The code needed to use the dataset will be distributed in `NLE v0.9.0`. For now it can be found on the `main` branch of [NLE](https://github.com/heiner/nle). You can follow the instructions to install [there](https://github.com/heiner/nle), or try the below.
 
 ```
 # With pip:
-pip install git+https://github.com/facebookresearch/nle.git@main
+pip install git+https://github.com/heiner/nle.git@main
 
 # From source:
-git clone --recursive https://github.com/facebookresearch/nle.git
+git clone --recursive https://github.com/heiner/nle.git
 cd nle && pip install -e .
 ```
 

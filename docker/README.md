@@ -38,7 +38,7 @@ version of `nle`, following a specific templates:
 To build and run any of them (e.g. `Dockerfile-bionic`) do:
 
 ```bash
-$ git clone https://github.com/facebookresearch/nle --recursive
+$ git clone https://github.com/heiner/nle --recursive
 $ cd nle
 $ docker build -f docker/Dockerfile-bionic . -t nle
 $ docker run --gpus all --rm --name nle nle

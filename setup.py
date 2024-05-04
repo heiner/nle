@@ -157,7 +157,7 @@ if __name__ == "__main__":
         long_description=long_description,
         long_description_content_type="text/markdown",
         author="The NLE Dev Team",
-        url="https://github.com/facebookresearch/nle",
+        url="https://github.com/heiner/nle",
         license="NetHack General Public License",
         entry_points=entry_points,
         packages=packages,
