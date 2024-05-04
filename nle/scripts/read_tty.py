@@ -71,16 +71,15 @@ def getfile(filename):
         f = os.fdopen(os.dup(0), "rb")
         os.dup2(1, 0)
         return f
-    elif os.path.splitext(filename)[1] in (".bz2", ".bzip2"):
+    if os.path.splitext(filename)[1] in (".bz2", ".bzip2"):
         import bz2
 
         return bz2.BZ2File(filename)
-    elif os.path.splitext(filename)[1] in (".gz", ".gzip"):
+    if os.path.splitext(filename)[1] in (".gz", ".gzip"):
         import gzip
 
         return gzip.GzipFile(filename)
-    else:
-        return open(filename, "rb")
+    return open(filename, "rb")
 
 
 def color(s, value):

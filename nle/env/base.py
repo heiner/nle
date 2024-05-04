@@ -485,7 +485,7 @@ class NLE(gym.Env):
             tty_colors = obs[self._observation_keys.index("tty_colors")]
             tty_cursor = obs[self._observation_keys.index("tty_cursor")]
             print(nethack.tty_render(tty_chars, tty_colors, tty_cursor))
-            return
+            return None
 
         if mode == "full":
             message_index = self._observation_keys.index("message")
@@ -509,7 +509,7 @@ class NLE(gym.Env):
             chars = self.last_observation[self._observation_keys.index("chars")]
             colors = self.last_observation[self._observation_keys.index("colors")]
             print(nethack.tty_render(chars, colors))
-            return
+            return None
 
         if mode in ("ansi", "string"):  # Misnomer: This is the least ANSI of them all.
             chars = self.last_observation[self._observation_keys.index("chars")]

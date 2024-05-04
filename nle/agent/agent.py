@@ -113,10 +113,9 @@ logging.basicConfig(
 def nested_map(f, n):
     if isinstance(n, tuple) or isinstance(n, list):
         return n.__class__(nested_map(f, sn) for sn in n)
-    elif isinstance(n, dict):
+    if isinstance(n, dict):
         return {k: nested_map(f, v) for k, v in n.items()}
-    else:
-        return f(n)
+    return f(n)
 
 
 def compute_baseline_loss(advantages):

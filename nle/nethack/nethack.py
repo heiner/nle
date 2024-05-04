@@ -307,7 +307,7 @@ class Nethack:
         seeds = [core, disp, reseed]
         if any(s is None for s in seeds):
             if all(s is None for s in seeds):
-                return
+                return None
             for i, (s, s0) in enumerate(zip(seeds, self.get_current_seeds())):
                 if s is None:
                     seeds[i] = s0
