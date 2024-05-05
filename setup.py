@@ -164,7 +164,7 @@ if __name__ == "__main__":
         setup_requires=["pybind11>=2.2"],
         install_requires=["pybind11>=2.2", "numpy>=1.16", "gym>=0.15,<=0.23"],
         extras_require=extras_deps,
-        python_requires=">=3.5",
+        python_requires=">=3.8",
         classifiers=[
             "License :: OSI Approved :: Nethack General Public License",
             "Development Status :: 4 - Beta",
