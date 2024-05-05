@@ -102,6 +102,7 @@ entry_points = {
 extras_deps = {
     "dev": [
         "pre-commit>=2.0.1",
+        "isort>=5.13.2",
         "cmake_format>=0.6.10",
         "memory-profiler>=0.60.0",
         "pytest>=6.2.5",
@@ -170,10 +171,10 @@ if __name__ == "__main__":
             "Operating System :: POSIX :: Linux",
             "Operating System :: MacOS",
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.5",
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
             "Programming Language :: C",
             "Programming Language :: C++",
             "Topic :: Scientific/Engineering :: Artificial Intelligence",
