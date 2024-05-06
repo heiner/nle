@@ -97,7 +97,7 @@ def play():
         if FLAGS.seeds is not None:
             env.unwrapped.seed(FLAGS.seeds)
 
-    obs = env.reset()
+    obs, reset_info = env.reset()
 
     steps = 0
     episodes = 0

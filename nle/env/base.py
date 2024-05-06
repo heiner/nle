@@ -142,12 +142,16 @@ class NLE(gym.Env):
 
     Examples:
         >>> env = NLE()
-        >>> obs = env.reset()
+        >>> obs, reset_info = env.reset()
         >>> obs, reward, done, info = env.step(0)
         >>> env.render()
     """
 
-    metadata = {"render.modes": ["human", "ansi"]}
+    # Gymnasium expects an fps rate > 0 for render checks
+    # but NetHack doesn't have any. Set it to 42, because
+    # that is always the answer to life, the universe and
+    # everything.
+    metadata = {"render_modes": ["human", "ansi", "full"], "render_fps": 42}
 
     class StepStatus(enum.IntEnum):
         """Specifies the status of the terminal state.
@@ -331,6 +335,19 @@ class NLE(gym.Env):
             for key, i in zip(self._original_observation_keys, self._original_indices)
         }
 
+    def _get_end_status(self, observation, done):
+        if self._check_abort(observation):
+            end_status = self.StepStatus.ABORTED
+        else:
+            end_status = self._is_episode_end(observation)
+        return self.StepStatus(done or end_status)
+
+    def _get_information(self, end_status):
+        info = {}
+        info["end_status"] = end_status
+        info["is_ascended"] = self.nethack.how_done() == nethack.ASCENDED
+        return info
+
     def print_action_meanings(self):
         for a_idx, a in enumerate(self.actions):
             print(a_idx, a)
@@ -369,11 +386,7 @@ class NLE(gym.Env):
 
         self.last_observation = observation
 
-        if self._check_abort(observation):
-            end_status = self.StepStatus.ABORTED
-        else:
-            end_status = self._is_episode_end(observation)
-        end_status = self.StepStatus(done or end_status)
+        end_status = self._get_end_status(observation, done)
 
         reward = float(
             self._reward_fn(last_observation, action, observation, end_status)
@@ -384,17 +397,18 @@ class NLE(gym.Env):
             self._quit_game(observation, done)
             done = True
 
-        info = {}
-        info["end_status"] = end_status
-        info["is_ascended"] = self.nethack.how_done() == nethack.ASCENDED
-
-        return self._get_observation(observation), reward, done, info
+        return (
+            self._get_observation(observation),
+            reward,
+            done,
+            self._get_information(end_status),
+        )
 
     def _in_moveloop(self, observation):
         program_state = observation[self._program_state_index]
         return program_state[3]  # in_moveloop
 
-    def reset(self, wizkit_items=None):
+    def reset(self, seed=None, options=None, wizkit_items=None):
         """Resets the environment.
 
         Note:
@@ -403,9 +417,11 @@ class NLE(gym.Env):
             fail in case Nethack is initialized with some uncommon options.
 
         Returns:
-            [dict] Observation of the state as defined by
-                `self.observation_space`.
+            (tuple) (Observation of the state as
+                defined by `self.observation_space`,
+                Extra game state information)
         """
+        super().reset(seed=seed, options=options)
         self._episode += 1
         if self.savedir and self._episode % self._save_ttyrec_every == 0:
             new_ttyrec = self._ttyrec_pattern % self._episode
@@ -416,6 +432,7 @@ class NLE(gym.Env):
         )
 
         self._steps = 0
+        done = False
 
         for _ in range(1000):
             # Get past initial phase of game. This should make sure
@@ -435,7 +452,9 @@ class NLE(gym.Env):
             )
             return self.reset(wizkit_items=wizkit_items)
 
-        return self._get_observation(self.last_observation)
+        return self._get_observation(self.last_observation), self._get_information(
+            self._get_end_status(self.last_observation, done)
+        )
 
     def close(self):
         self._close_nethack()
