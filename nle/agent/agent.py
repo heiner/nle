@@ -37,7 +37,7 @@ except ImportError:
         '`pip install "nle[agent]"`'
     )
 
-import gym  # noqa: E402
+import gymnasium as gym  # noqa: E402
 
 import nle  # noqa: F401, E402
 from nle import nethack  # noqa: E402
@@ -140,7 +140,9 @@ def compute_policy_gradient_loss(logits, actions, advantages):
 
 
 def create_env(name, *args, **kwargs):
-    return gym.make(name, observation_keys=("glyphs", "blstats"), *args, **kwargs)  # noqa: B026
+    return gym.make(
+        name, observation_keys=("glyphs", "blstats"), *args, **kwargs
+    )  # noqa: B026
 
 
 def act(
