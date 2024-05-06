@@ -50,7 +50,7 @@ class TestParallelEnvs:
         num_resets = 1
 
         while num_resets < 4:
-            _, _, done, _ = env.step(random.choice(ACTIONS))
+            _, _, done, _, _ = env.step(random.choice(ACTIONS))
             if done:
                 queue.append(env)
                 env = queue.pop(0)
@@ -82,7 +82,7 @@ class TestParallelEnvs:
 
         while num_resets < 4:
             a = random.choice(ACTIONS)
-            _, _, done, _ = env.step(a)
+            _, _, done, _, _ = env.step(a)
             if done:
                 resetqueue.put(env)
                 env = readyqueue.get()
