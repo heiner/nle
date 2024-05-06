@@ -1,29 +1,21 @@
 ---
 name: Lintcheck Python
-
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "**.py"
+    branches: [main]
+    paths: ['**.py']
   pull_request:
-    paths:
-      - "**.py"
-
+    paths: ['**.py']
 jobs:
   check_python:
-    name: "Check Python linting"
-
+    name: Check Python linting
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
-    - uses: actions/checkout@v4
-    - run: "pip install -q uv && uv pip install --system ruff isort"
-    - run: "ruff format --check --diff ."
-    - run: "ruff check"
-    - run: "isort -c --diff nle/"
-...
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@v4
+      - run: pip install -q uv && uv pip install --system ruff isort
+      - run: ruff format --check --diff .
+      - run: ruff check
+      - run: isort -c --diff nle/
