@@ -229,6 +229,9 @@ class NLE(gym.Env):
                 If set to False, only skip click through 'MORE' on death.
             spawn_monsters: If False, disables normal NetHack behavior to randomly
                 create monsters.
+            render_mode (str): mode used to render the screen. One of
+                "human" | "ansi" | "full".
+                Defaults to "human", i.e. what a human would see playing the game.
         """
         self.character = character
         self._max_episode_steps = max_episode_steps
@@ -408,7 +411,7 @@ class NLE(gym.Env):
         program_state = observation[self._program_state_index]
         return program_state[3]  # in_moveloop
 
-    def reset(self, seed=None, options=None, wizkit_items=None):
+    def reset(self, seed=None, options=None):
         """Resets the environment.
 
         Note:
@@ -427,9 +430,7 @@ class NLE(gym.Env):
             new_ttyrec = self._ttyrec_pattern % self._episode
         else:
             new_ttyrec = None
-        self.last_observation = self.nethack.reset(
-            new_ttyrec, wizkit_items=wizkit_items
-        )
+        self.last_observation = self.nethack.reset(new_ttyrec, options=options)
 
         self._steps = 0
         done = False
@@ -450,7 +451,7 @@ class NLE(gym.Env):
                 "Not in moveloop after 1000 tries, aborting (ttyrec: %s)." % new_ttyrec,
                 stacklevel=2,
             )
-            return self.reset(wizkit_items=wizkit_items)
+            return self.reset(seed=seed, options=options)
 
         return self._get_observation(self.last_observation), self._get_information(
             self._get_end_status(self.last_observation, done)
@@ -537,8 +538,6 @@ class NLE(gym.Env):
             chars = self.last_observation[self._observation_keys.index("chars")]
             # TODO: Why return a string here but print in the other branches?
             return "\n".join([line.tobytes().decode("utf-8") for line in chars])
-
-        return super().render()
 
     def __repr__(self):
         return "<%s>" % self.__class__.__name__
