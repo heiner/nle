@@ -15,7 +15,7 @@ START_METHODS = [m for m in ("fork", "spawn") if m in mp.get_all_start_methods()
 def new_env_one_step():
     env = gym.make("NetHackScore-v0")
     env.reset()
-    obs, reward, done, _ = env.step(0)
+    obs, reward, done, _, _ = env.step(0)
     return done
 
 

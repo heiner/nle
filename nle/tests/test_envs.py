@@ -62,7 +62,7 @@ def compare_rollouts(env0, env1, max_rollout_len):
     while True:
         a = env0.action_space.sample()
         obs0, reward0, done0, truncated0, info0 = env0.step(a)
-        obs0, reward0, done0, truncated1, info0 = env0.step(a)
+        obs1, reward1, done1, truncated1, info1 = env1.step(a)
         step += 1
 
         s0, s1 = term_screen(obs0), term_screen(obs1)
@@ -319,9 +319,9 @@ class TestGymEnvRollout:
         obs0 = env0.reset()
         seeds0 = env0.unwrapped.get_seeds()
 
-        env1.seed(*seeds0)
+        env1.unwrapped.seed(*seeds0)
         obs1 = env1.reset()
-        seeds1 = env1.get_seeds()
+        seeds1 = env1.unwrapped.get_seeds()
 
         assert seeds0 == seeds1 == initial_seeds
 
@@ -367,7 +367,7 @@ class TestGymDynamics:
 
         # Hack to quit.
         env.unwrapped.nethack.step(nethack.M("q"))
-        obs, reward, done, _, _ = env.step(env.actions.index(ord("y")))
+        obs, reward, done, _, _ = env.step(env.unwrapped.actions.index(ord("y")))
 
         assert done
         assert reward == 0.0
@@ -391,7 +391,7 @@ class TestGymDynamics:
 
         # Hack to quit.
         env.unwrapped.nethack.step(nethack.M("q"))
-        _, reward, done, _ = env.step(env.unwrapped.actions.index(ord("y")))
+        _, reward, done, _, info = env.step(env.unwrapped.actions.index(ord("y")))
 
         assert done
         assert reward == 0.0
