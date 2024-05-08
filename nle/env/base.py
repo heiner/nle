@@ -380,6 +380,8 @@ class NLE(gym.Env):
         last_observation = tuple(a.copy() for a in self.last_observation)
 
         observation, done = self.nethack.step(self.actions[action])
+        truncated = self._check_abort(observation)
+
         is_game_over = observation[self._program_state_index][0] == 1
         if is_game_over or not self._allow_all_modes:
             observation, done = self._perform_known_steps(
@@ -400,8 +402,6 @@ class NLE(gym.Env):
             # Try to end the game nicely.
             self._quit_game(observation, done)
             done = True
-
-        truncated = False
 
         return (
             self._get_observation(observation),
