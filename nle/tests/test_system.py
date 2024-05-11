@@ -15,8 +15,8 @@ START_METHODS = [m for m in ("fork", "spawn") if m in mp.get_all_start_methods()
 def new_env_one_step():
     env = gym.make("NetHackScore-v0")
     env.reset()
-    obs, reward, done, _, _ = env.step(0)
-    return done
+    obs, reward, terminated, _, _ = env.step(0)
+    return terminated
 
 
 @pytest.mark.parametrize(
@@ -50,8 +50,8 @@ class TestParallelEnvs:
         num_resets = 1
 
         while num_resets < 4:
-            _, _, done, _, _ = env.step(random.choice(ACTIONS))
-            if done:
+            _, _, terminated, _, _ = env.step(random.choice(ACTIONS))
+            if terminated:
                 queue.append(env)
                 env = queue.pop(0)
                 env.reset()
@@ -82,8 +82,8 @@ class TestParallelEnvs:
 
         while num_resets < 4:
             a = random.choice(ACTIONS)
-            _, _, done, _, _ = env.step(a)
-            if done:
+            _, _, terminated, _, _ = env.step(a)
+            if terminated:
                 resetqueue.put(env)
                 env = readyqueue.get()
                 num_resets += 1

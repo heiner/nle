@@ -37,12 +37,12 @@ def rollout_env(env, max_rollout_len):
 
     for _ in range(max_rollout_len):
         a = env.action_space.sample()
-        obs, reward, done, truncated, info = env.step(a)
+        obs, reward, terminated, truncated, info = env.step(a)
         assert env.observation_space.contains(obs)
         assert isinstance(reward, float)
-        assert isinstance(done, bool)
+        assert isinstance(terminated, bool)
         assert isinstance(info, dict)
-        if done:
+        if terminated:
             assert not info["is_ascended"]
             break
     env.close()
@@ -61,8 +61,8 @@ def compare_rollouts(env0, env1, max_rollout_len):
     step = 0
     while True:
         a = env0.action_space.sample()
-        obs0, reward0, done0, truncated0, info0 = env0.step(a)
-        obs1, reward1, done1, truncated1, info1 = env1.step(a)
+        obs0, reward0, terminated0, truncated0, info0 = env0.step(a)
+        obs1, reward1, terminated1, truncated1, info1 = env1.step(a)
         step += 1
 
         s0, s1 = term_screen(obs0), term_screen(obs1)
@@ -72,11 +72,11 @@ def compare_rollouts(env0, env1, max_rollout_len):
         else:
             np.testing.assert_equal(obs0, obs1)
         assert reward0 == reward1
-        assert done0 == done1
+        assert terminated0 == terminated1
         assert truncated0 == truncated1
         assert info0 == info1
 
-        if done0 or step >= max_rollout_len:
+        if terminated0 or step >= max_rollout_len:
             return
 
 
@@ -333,8 +333,8 @@ class TestGymEnvRollout:
         env.reset()
         for _ in range(rollout_len):
             action = env.action_space.sample()
-            _, _, done, _, _ = env.step(action)
-            if done:
+            _, _, terminated, _, _ = env.step(action)
+            if terminated:
                 env.reset()
             output = env.render()
             assert isinstance(output, str)
@@ -361,26 +361,26 @@ class TestGymDynamics:
     def test_kick_and_quit(self, env):
         env.reset()
         kick = env.unwrapped.actions.index(nethack.Command.KICK)
-        obs, reward, done, _, _ = env.step(kick)
+        obs, reward, terminated, _, _ = env.step(kick)
         assert b"In what direction? " in bytes(obs["message"])
         env.step(nethack.MiscAction.MORE)
 
         # Hack to quit.
         env.unwrapped.nethack.step(nethack.M("q"))
-        obs, reward, done, _, _ = env.step(env.unwrapped.actions.index(ord("y")))
+        obs, reward, terminated, _, _ = env.step(env.unwrapped.actions.index(ord("y")))
 
-        assert done
+        assert terminated
         assert reward == 0.0
 
     def test_final_reward(self, env):
         obs, reset_info = env.reset()
 
         for _ in range(100):
-            obs, reward, done, _, info = env.step(env.action_space.sample())
-            if done:
+            obs, reward, terminated, _, info = env.step(env.action_space.sample())
+            if terminated:
                 break
 
-        if done:
+        if terminated:
             assert reward == 0.0
             return
 
@@ -391,9 +391,9 @@ class TestGymDynamics:
 
         # Hack to quit.
         env.unwrapped.nethack.step(nethack.M("q"))
-        _, reward, done, _, info = env.step(env.unwrapped.actions.index(ord("y")))
+        _, reward, terminated, _, info = env.step(env.unwrapped.actions.index(ord("y")))
 
-        assert done
+        assert terminated
         assert reward == 0.0
 
     def test_ttyrec_every(self):
@@ -403,8 +403,8 @@ class TestGymDynamics:
         for episode in range(10):
             env.reset()
             for c in [ord(" "), ord(" "), ord("<"), ord("y")]:
-                _, _, done, *_ = env.step(env.unwrapped.actions.index(c))
-            assert done
+                _, _, terminated, *_ = env.step(env.unwrapped.actions.index(c))
+            assert terminated
 
             if episode % 2 != 0:
                 continue
@@ -421,6 +421,24 @@ class TestGymDynamics:
             entries = f.readlines()
 
         assert len(entries) == 10
+
+    def test_env_truncation(self):
+        test_horizon = 10
+
+        env = gym.make("NetHack-v0", max_episode_steps=test_horizon)
+        env.reset()
+        for steps in range(test_horizon - 1):
+            obs, reward, termination, truncation, info = env.step(
+                nethack.MiscDirection.WAIT
+            )
+            assert termination == False
+            assert truncation == False
+
+        obs, reward, termination, truncation, info = env.step(
+            nethack.MiscDirection.WAIT
+        )
+        assert termination == False
+        assert truncation == True
 
 
 class TestEnvMisc:
