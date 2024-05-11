@@ -543,6 +543,8 @@ class NLE(gym.Env):
             # TODO: Why return a string here but print in the other branches?
             return "\n".join([line.tobytes().decode("utf-8") for line in chars])
 
+        return "\nInvalid render mode: " + mode
+
     def __repr__(self):
         return "<%s>" % self.__class__.__name__
 

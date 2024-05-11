@@ -427,18 +427,18 @@ class TestGymDynamics:
 
         env = gym.make("NetHack-v0", max_episode_steps=test_horizon)
         env.reset()
-        for steps in range(test_horizon - 1):
+        for _steps in range(test_horizon - 1):
             obs, reward, termination, truncation, info = env.step(
                 nethack.MiscDirection.WAIT
             )
-            assert termination == False
-            assert truncation == False
+            assert not termination
+            assert not truncation
 
         obs, reward, termination, truncation, info = env.step(
             nethack.MiscDirection.WAIT
         )
-        assert termination == False
-        assert truncation == True
+        assert not termination
+        assert truncation
 
 
 class TestEnvMisc:
