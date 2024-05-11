@@ -140,9 +140,7 @@ def compute_policy_gradient_loss(logits, actions, advantages):
 
 
 def create_env(name, *args, **kwargs):
-    return gym.make(
-        name, observation_keys=("glyphs", "blstats"), *args, **kwargs
-    )  # noqa: B026
+    return gym.make(name, observation_keys=("glyphs", "blstats"), *args, **kwargs)  # noqa: B026
 
 
 def act(
