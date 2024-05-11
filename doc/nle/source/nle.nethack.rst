@@ -17,14 +17,6 @@ nle.nethack.actions module
    :undoc-members:
    :show-inheritance:
 
-nle.nethack.helper module
--------------------------
-
-.. automodule:: nle.nethack.helper
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 nle.nethack.nethack module
 --------------------------
 
@@ -32,31 +24,6 @@ nle.nethack.nethack module
    :members:
    :undoc-members:
    :show-inheritance:
-
-nle.nethack.print\_message module
----------------------------------
-
-.. automodule:: nle.nethack.print_message
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-nle.nethack.ptyprocess module
------------------------------
-
-.. automodule:: nle.nethack.ptyprocess
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-nle.nethack.version module
---------------------------
-
-.. automodule:: nle.nethack.version
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 
 Module contents
 ---------------

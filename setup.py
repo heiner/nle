@@ -108,7 +108,7 @@ extras_deps = {
         "pytest>=6.2.5",
         "pytest-benchmark>=3.4.1",
         "sphinx>=2.4.4",
-        "sphinx-rtd-theme==0.4.3",
+        "sphinx-rtd-theme>=0.4.3",
         "setuptools>=69.5.1",
         "ruff>=0.4.3",
     ],

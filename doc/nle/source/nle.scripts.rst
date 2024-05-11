@@ -20,22 +20,6 @@ nle.scripts.play module
    :undoc-members:
    :show-inheritance:
 
-nle.scripts.play\_random\_games module
---------------------------------------
-
-.. automodule:: nle.scripts.play_random_games
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-nle.scripts.random\_agent module
---------------------------------
-
-.. automodule:: nle.scripts.random_agent
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 nle.scripts.ttyplay module
 --------------------------
 

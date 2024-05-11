@@ -289,9 +289,9 @@ class NetHackChallenge(NetHackScore):
 
     The task is an augmentation of the standard NLE task. This is the NLE Score Task
     but with some subtle differences:
-        * the action space is fixed to include the full keyboard
-        * menus and "<More>" tokens are not skipped
-        * starting character is randomly assigned
+    * the action space is fixed to include the full keyboard
+    * menus and "<More>" tokens are not skipped
+    * starting character is randomly assigned
     """
 
     def __init__(
