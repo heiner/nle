@@ -17,7 +17,7 @@
   </a>
  </p>
 
-The NetHack Learning Environment (NLE) is a Reinforcement Learning environment presented at [NeurIPS 2020](https://neurips.cc/Conferences/2020).
+The NetHack Learning Environment (NLE) is a Reinforcement Learning environment originally presented at [NeurIPS 2020](https://neurips.cc/Conferences/2020).
 NLE is based on [NetHack 3.6.6](https://github.com/NetHack/NetHack/tree/NetHack-3.6.6_PostRelease) and designed to provide a standard RL interface to the game, and comes with tasks that function as a first step to evaluate agents on this new environment.
 
 NetHack is one of the oldest and arguably most impactful videogames in history,
@@ -33,6 +33,8 @@ README](./README.nh), at [nethack.org](https://nethack.org/), and on the
 [NetHack wiki](https://nethackwiki.com).
 
 ![Example of an agent running on NLE](https://github.com/heiner/nle/raw/main/dat/nle/example_run.gif)
+
+This version of NLE uses the [Farama Organisation Gymnasium Environment](https://gymnasium.farama.org) APIs.
 
 ### NLE Language Wrapper
 
@@ -73,12 +75,12 @@ to add papers.
 # Getting started
 
 Starting with NLE environments is extremely simple, provided one is familiar
-with other gym / RL environments.
+with other gym (or Gynmasium) / RL environments.
 
 
 ## Installation
 
-NLE requires `python>=3.5`, `cmake>=3.15` to be installed and available both when building the
+NLE requires `python>=3.8`, `cmake>=3.15` to be installed and available both when building the
 package, and at runtime.
 
 On **MacOS**, one can use `Homebrew` as follows:
@@ -133,7 +135,7 @@ README](docker/README.md).
 After installation, one can try out any of the provided tasks as follows:
 
 ```python
->>> import gym
+>>> import gymnasium as gym
 >>> import nle
 >>> env = gym.make("NetHackScore-v0")
 >>> env.reset()  # each reset generates a new dungeon
@@ -152,7 +154,7 @@ $ python -m nle.scripts.play
 $ python -m nle.scripts.play --mode random
 
 # Play the full game using directly the NetHack internal interface
-# (Useful for debugging outside of the gym environment)
+# (Useful for debugging outside of the gymnasium environment)
 $ python -m nle.scripts.play --env NetHackScore-v0 # works with random agent too
 
 # See all the options
@@ -219,8 +221,8 @@ see [this document](./CONTRIBUTING.md).
 NLE is direct fork of [NetHack](https://github.com/nethack/nethack) and
 therefore contains code that operates on many different levels of abstraction.
 This ranges from low-level game logic, to the higher-level administration of
-repeated nethack games, and finally to binding of these games to Python `gym`
-environment.
+repeated nethack games, and finally to binding of these games to Python 
+`gymnasium` environment.
 
 If you want to learn more about the architecture of `nle` and how it works
 under the hood, checkout the [architecture document](./doc/nle/ARCHITECTURE.md).
