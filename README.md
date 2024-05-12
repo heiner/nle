@@ -80,7 +80,7 @@ with other gym (or Gynmasium) / RL environments.
 
 ## Installation
 
-NLE requires `python>=3.8`, `cmake>=3.15` to be installed and available both when building the
+NLE requires `python>=3.8`, `cmake>=3.18` to be installed and available both when building the
 package, and at runtime.
 
 On **MacOS**, one can use `Homebrew` as follows:
