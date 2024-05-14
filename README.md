@@ -3,18 +3,10 @@
 --------------------------------------------------------------------------------
 
 <p align="center">
-  <a href="https://github.com/heiner/nle/actions/workflows/test_and_deploy.yml">
-    <img src="https://github.com/heiner/nle/actions/workflows/test_and_deploy.yml/badge.svg?branch=main" />
-  </a>
-  <a href="https://pypi.python.org/pypi/nle/">
-    <img src="https://img.shields.io/pypi/v/nle.svg" />
-  </a>
-   <a href="https://pepy.tech/project/nle">
-    <img src="https://static.pepy.tech/personalized-badge/nle?period=total&units=international_system&left_color=black&right_color=orange&left_text=Downloads" />
-  </a>
-   <a href="https://twitter.com/NetHack_LE">
-    <img src="https://img.shields.io/twitter/follow/NetHack_LE?label=Twitter&style=social" alt="Twitter" />
-  </a>
+  <a href="https://github.com/heiner/nle/actions/workflows/test_and_deploy.yml"><img src="https://github.com/heiner/nle/actions/workflows/test_and_deploy.yml/badge.svg?branch=main" /></a>
+  <a href="https://pypi.python.org/pypi/nle/"><img src="https://img.shields.io/pypi/v/nle.svg" /></a>
+  <a href="https://pepy.tech/project/nle"><img src="https://static.pepy.tech/personalized-badge/nle?period=total&units=international_system&left_color=black&right_color=orange&left_text=Downloads" /></a>
+  <a href="https://twitter.com/NetHack_LE"><img src="https://img.shields.io/twitter/follow/NetHack_LE?label=Twitter&style=social" alt="Twitter" /></a>
  </p>
 
 The NetHack Learning Environment (NLE) is a Reinforcement Learning environment originally presented at [NeurIPS 2020](https://neurips.cc/Conferences/2020).
