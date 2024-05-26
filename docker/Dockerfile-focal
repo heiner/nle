@@ -2,9 +2,23 @@
 
 FROM nvidia/cuda:12.4.1-devel-ubuntu20.04
 
+ARG TARGETPLATFORM
+RUN echo "Building image for $TARGETPLATFORM"
+
 ARG PYTHON_VERSION=3.8
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
+
+RUN apt-get update && \
+    apt-get install -yq wget
+
+RUN case ${TARGETPLATFORM} in \
+    "linux/amd64")  CUDA_ARCH=x86_64  ;; \
+    "linux/x86_64") CUDA_ARCH=x86_64  ;; \
+    "linux/arm64")  CUDA_ARCH=arm64 ;; \
+    esac && \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${CUDA_ARCH}/cuda-keyring_1.0-1_all.deb
+
+RUN dpkg -i cuda-keyring_1.0-1_all.deb
 
 RUN apt-get update && apt-get install -yq \
         bison \
@@ -19,11 +33,16 @@ RUN apt-get update && apt-get install -yq \
 
 WORKDIR /opt/conda_setup
 
-RUN curl -o miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-     chmod +x miniconda.sh && \
-     ./miniconda.sh -b -p /opt/conda && \
-     /opt/conda/bin/conda install -y python=$PYTHON_VERSION && \
-     /opt/conda/bin/conda clean -ya
+RUN case ${TARGETPLATFORM} in \
+    "linux/amd64")  MINI_ARCH=x86_64  ;; \
+    "linux/x86_64") MINI_ARCH=x86_64  ;; \
+    "linux/arm64")  MINI_ARCH=aarch64 ;; \
+    esac && \
+    curl -o miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-${MINI_ARCH}.sh && \
+    chmod +x miniconda.sh && \
+    ./miniconda.sh -b -p /opt/conda && \
+    /opt/conda/bin/conda install -y python=$PYTHON_VERSION && \
+    /opt/conda/bin/conda clean -ya
 ENV PATH /opt/conda/bin:$PATH
 
 RUN python -m pip install --upgrade pip ipython ipdb
@@ -37,11 +56,3 @@ RUN pip install '.[all]'
 WORKDIR /workspace
 
 CMD ["/bin/bash"]
-
-
-# Docker commands:
-#   docker rm nle -v
-#   docker build -t nle -f docker/Dockerfile-focal .
-#   docker run --gpus all --rm --name nle nle
-# or
-#   docker run --gpus all -it --entrypoint /bin/bash nle
