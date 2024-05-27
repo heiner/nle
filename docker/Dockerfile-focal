@@ -16,7 +16,7 @@ RUN case ${TARGETPLATFORM} in \
     "linux/x86_64") CUDA_ARCH=x86_64  ;; \
     "linux/arm64")  CUDA_ARCH=arm64 ;; \
     esac && \
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${CUDA_ARCH}/cuda-keyring_1.0-1_all.deb
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/${CUDA_ARCH}/cuda-keyring_1.0-1_all.deb
 
 RUN dpkg -i cuda-keyring_1.0-1_all.deb
 
