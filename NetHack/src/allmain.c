@@ -24,7 +24,7 @@ STATIC_DCL void FDECL(debug_fields, (const char *));
  * after every step with some probability (true by default).
  */
 extern int FDECL(nle_spawn_monsters, ());
-
+[oops]
 void
 moveloop(resuming)
 boolean resuming;
