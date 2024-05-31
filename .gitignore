@@ -31,7 +31,7 @@ _$*
 
 # We generate makefiles by shell script
 Makefile
-!/doc/nle/Makefile
+!NetHack/doc/nle/Makefile
 
 # Win32-specific ignores
 Debug/

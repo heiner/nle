@@ -1,17 +1,17 @@
 include version.txt
 
 include CMakeLists.txt
-recursive-include doc *
-recursive-include dat *
-recursive-include DEVEL *
-recursive-include include *
-recursive-include src *
-recursive-include sys *
-recursive-include util *
-recursive-include win/rl *
-recursive-include win/share *
-recursive-include win/tty *
-recursive-include third_party *
+recursive-include Nethack/doc *
+recursive-include Nethack/dat *
+recursive-include Nethack/DEVEL *
+recursive-include Nethack/include *
+recursive-include Nethack/src *
+recursive-include Nethack/sys *
+recursive-include Nethack/util *
+recursive-include Nethack/win/rl *
+recursive-include Nethack/win/share *
+recursive-include Nethack/win/tty *
+recursive-include Nethack/third_party *
 
 recursive-exclude build *
 exclude nle/dashboard
