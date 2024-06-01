@@ -71,25 +71,38 @@ else()
   message("Seeding disabled.")
 endif()
 
-set(NLE_SRC ${nle_SOURCE_DIR}/NetHack/src)
-set(NLE_INC ${nle_SOURCE_DIR}/NetHack/include)
-set(NLE_DAT ${nle_SOURCE_DIR}/NetHack/dat)
-set(NLE_UTIL ${nle_SOURCE_DIR}/NetHack/util)
-set(NLE_DOC ${nle_SOURCE_DIR}/NetHack/doc)
-set(NLE_SSYS ${nle_SOURCE_DIR}/NetHack/sys/share)
-set(NLE_WIN ${nle_SOURCE_DIR}/NetHack/win)
+set(NLE_SRC ${nle_SOURCE_DIR}/nle_lib/src)
+set(NLE_INC ${nle_SOURCE_DIR}/nle_lib/include)
+set(NLE_DAT ${nle_SOURCE_DIR}/nle_lib/dat)
+set(NLE_UTIL ${nle_SOURCE_DIR}/nle_lib/util)
+set(NLE_DOC ${nle_SOURCE_DIR}/nle_lib/doc)
+set(NLE_SSYS ${nle_SOURCE_DIR}/nle_lib/sys/share)
+set(NLE_WIN ${nle_SOURCE_DIR}/nle_lib/win)
 
-set(NLE_SRC_GEN ${nle_BINARY_DIR}/NetHack/src)
-set(NLE_INC_GEN ${nle_BINARY_DIR}/NetHack/include)
-set(NLE_DAT_GEN ${nle_BINARY_DIR}/NetHack/dat)
-set(NLE_UTIL_GEN ${nle_BINARY_DIR}/NetHack/util)
+set(NLE_SRC_GEN ${nle_BINARY_DIR}/nle_lib/src)
+set(NLE_INC_GEN ${nle_BINARY_DIR}/nle_lib/include)
+set(NLE_DAT_GEN ${nle_BINARY_DIR}/nle_lib/dat)
+set(NLE_UTIL_GEN ${nle_BINARY_DIR}/nle_lib/util)
+
+set(NH_SRC ${nle_SOURCE_DIR}/NetHack/src)
+set(NH_INC ${nle_SOURCE_DIR}/NetHack/include)
+set(NH_DAT ${nle_SOURCE_DIR}/NetHack/dat)
+set(NH_UTIL ${nle_SOURCE_DIR}/NetHack/util)
+set(NH_DOC ${nle_SOURCE_DIR}/NetHack/doc)
+set(NH_SSYS ${nle_SOURCE_DIR}/NetHack/sys/share)
+set(NH_WIN ${nle_SOURCE_DIR}/NetHack/win)
+
+set(NH_SRC_GEN ${nle_BINARY_DIR}/NetHack/src)
+set(NH_INC_GEN ${nle_BINARY_DIR}/NetHack/include)
+set(NH_DAT_GEN ${nle_BINARY_DIR}/NetHack/dat)
+set(NH_UTIL_GEN ${nle_BINARY_DIR}/NetHack/util)
 
 set(CMAKE_INSTALL_MESSAGE LAZY) # Don't tell us about up-to-date files.
 
 # EXCLUDE_FROM_ALL: Don't install this static library into /usr/local.
 add_subdirectory(third_party/deboost.context EXCLUDE_FROM_ALL)
-add_subdirectory(NetHack/util)
-add_subdirectory(NetHack/dat)
+add_subdirectory(nle_lib/util)
+add_subdirectory(nle_lib/dat)
 
 file(
   GLOB
@@ -101,7 +114,8 @@ file(
   "NetHack/sys/unix/unixmain.c"
   "NetHack/sys/unix/unixres.c"
   "NetHack/win/tty/*.c"
-  "NetHack/win/rl/winrl.cc")
+  "nle_lib/win/rl/winrl.cc"
+  "nle_lib/src/*.c")
 
 # terminal emulator library
 add_library(tmt STATIC "third_party/libtmt/tmt.c")
@@ -114,7 +128,8 @@ set_target_properties(nethack PROPERTIES CXX_STANDARD 14 SUFFIX ".so")
 target_include_directories(
   nethack
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/NetHack/include ${NLE_INC_GEN}
-         /usr/local/include ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libtmt)
+         ${NH_INC_GEN} /usr/local/include
+         ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libtmt)
 target_link_directories(nethack PUBLIC /usr/local/lib)
 
 # Careful with -DMONITOR_HEAP: Ironically, it fails to fclose FILE* heaplog.
@@ -123,16 +138,16 @@ target_link_directories(nethack PUBLIC /usr/local/lib)
 target_link_libraries(nethack PUBLIC m fcontext bz2 tmt)
 
 # dlopen wrapper library
-add_library(nethackdl STATIC "NetHack/sys/unix/nledl.c")
+add_library(nethackdl STATIC "nle_lib/sys/unix/nledl.c")
 target_include_directories(nethackdl
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/NetHack/include)
 target_link_libraries(nethackdl PUBLIC dl)
 
 # rlmain C++ (test) binary
-add_executable(rlmain "NetHack/sys/unix/rlmain.cc")
+add_executable(rlmain "nle_lib/sys/unix/rlmain.cc")
 set_target_properties(rlmain PROPERTIES CXX_STANDARD 11)
 target_link_libraries(rlmain PUBLIC nethackdl)
-target_include_directories(rlmain PUBLIC ${NLE_INC_GEN})
+target_include_directories(rlmain PUBLIC ${NLE_INC_GEN} ${NH_INC_GEN})
 add_dependencies(rlmain util) # For pm.h.
 
 # pybind11 core python library.
