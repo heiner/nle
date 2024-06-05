@@ -68,7 +68,7 @@ set(ALL_DAT_NOTGEN
 
 # makedef and friends like having their inputs in the same directory.
 foreach(filename ${ALL_DAT_NOTGEN})
-  configure_file(${NH_DAT}/${filename} ${filename} COPYONLY)
+  configure_file(${NH_DAT}/${filename} ${NH_DAT_GEN}/${filename} COPYONLY)
 endforeach(filename)
 
 # Dat files that are not inputs to any tools.

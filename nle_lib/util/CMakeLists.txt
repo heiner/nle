@@ -1,14 +1,14 @@
 find_program(FLEX_EXECUTABLE NAMES flex flex.exe)
 find_program(BISON_EXECUTABLE NAMES bison bison.exe)
 
-set(MAKEDEFS_SRC makedefs.c ${NH_SRC}/monst.c ${NH_SRC}/objects.c)
+set(MAKEDEFS_SRC ${NH_UTIL}/makedefs.c ${NH_SRC}/monst.c ${NH_SRC}/objects.c)
 
-set(DGN_COMP_SRC dgn_main.c panic.c ${NH_SRC}/alloc.c
+set(DGN_COMP_SRC ${NH_UTIL}/dgn_main.c ${NH_UTIL}/panic.c ${NH_SRC}/alloc.c
                  ${NH_UTIL_GEN}/dgn_parser.c ${NH_UTIL_GEN}/dgn_scanner.c)
 
 set(LEV_COMP_SRC
-    lev_main.c
-    panic.c
+    ${NH_UTIL}/lev_main.c
+    ${NH_UTIL}/panic.c
     ${NH_SRC}/decl.c
     ${NH_SRC}/monst.c
     ${NH_SRC}/objects.c
@@ -20,7 +20,8 @@ set(LEV_COMP_SRC
 set(MAKEDEFS_HEADERS ${NH_INC_GEN}/date.h ${NH_INC_GEN}/onames.h
                      ${NH_INC_GEN}/pm.h)
 
-set(DLB_SRC dlb_main.c ${NH_SRC}/dlb.c panic.c ${NH_SRC}/alloc.c)
+set(DLB_SRC ${NH_UTIL}/dlb_main.c ${NH_SRC}/dlb.c ${NH_UTIL}/panic.c
+            ${NH_SRC}/alloc.c)
 
 file(MAKE_DIRECTORY ${NH_INC_GEN} ${NH_SRC_GEN})
 
@@ -35,7 +36,7 @@ target_include_directories(lev_comp PRIVATE ${NH_INC} ${NH_INC_GEN}
                                             ${NH_UTIL_GEN})
 add_executable(dlb ${DLB_SRC})
 target_include_directories(dlb PRIVATE ${NH_INC} ${NH_INC_GEN} ${NH_UTIL_GEN})
-add_executable(recover recover.c)
+add_executable(recover ${NH_UTIL}/recover.c)
 target_include_directories(recover PRIVATE ${NH_INC} ${NH_INC_GEN}
                                            ${NH_UTIL_GEN})
 

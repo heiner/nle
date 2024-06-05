@@ -30,6 +30,9 @@ else()
   message("Some other build type.")
 endif()
 
+# Temp supress warning - REMOVE BEFORE RELEASE
+add_compile_options(-Wno-deprecated-non-prototype)
+
 message(STATUS "Building nle backend version: ${NLE_VERSION}")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -140,7 +143,7 @@ target_link_libraries(nethack PUBLIC m fcontext bz2 tmt)
 # dlopen wrapper library
 add_library(nethackdl STATIC "nle_lib/sys/unix/nledl.c")
 target_include_directories(nethackdl
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/NetHack/include)
+                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/nle_lib/include)
 target_link_libraries(nethackdl PUBLIC dl)
 
 # rlmain C++ (test) binary
@@ -154,7 +157,7 @@ add_dependencies(rlmain util) # For pm.h.
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11)
 pybind11_add_module(
   _pynethack
-  NetHack/win/rl/pynethack.cc
+  nle_lib/win/rl/pynethack.cc
   NetHack/src/monst.c
   NetHack/src/decl.c
   NetHack/src/drawing.c
