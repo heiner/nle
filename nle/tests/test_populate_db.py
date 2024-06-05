@@ -94,7 +94,7 @@ class TestPopulateDB:
             assert actual[TTYRECS_PATH_IDX].endswith(endings[i])
             assert actual[TTYRECS_PART_IDX] == 0
             assert actual[TTYRECS_GAMEID_IDX] == result[0][TTYRECS_GAMEID_IDX] + i
-            assert actual[GAMES_VERSION_IDX] == "3.6.6"
+            assert actual[GAMES_VERSION_IDX] == "3.6.7"
             assert actual[GAMES_ROLE_IDX] == "Mon"
             assert actual[GAMES_RACE_IDX] == "Hum"
             assert actual[GAMES_GEN_IDX] == "Mal"
