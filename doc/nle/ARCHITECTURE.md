@@ -13,7 +13,7 @@ the changes needed for RL.
 
 The architecture can be thought of as operating at through various layers connecting 
 the low C files that execute the game, up to the Farama Foundation's `gymnasium` environment 
-that just feeds back observations. Below we examine the these layers from lowest to highest:
+that just feeds back observations. Below we examine these layers from lowest to highest:
 
 
 ### Layer 0: “Original” NetHack Game Logic
