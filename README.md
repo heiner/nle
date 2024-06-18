@@ -10,7 +10,7 @@
  </p>
 
 The NetHack Learning Environment (NLE) is a Reinforcement Learning environment originally presented at [NeurIPS 2020](https://neurips.cc/Conferences/2020).
-NLE is based on [NetHack 3.6.6](https://github.com/NetHack/NetHack/tree/NetHack-3.6.6_PostRelease) and designed to provide a standard RL interface to the game, and comes with tasks that function as a first step to evaluate agents on this new environment.
+This version of NLE is based on [NetHack 3.6.7](https://github.com/NetHack/NetHack/releases/tag/NetHack-3.6.7_Released) and designed to provide a standard RL interface to the game, and comes with tasks that function as a first step to evaluate agents on this new environment.
 
 NetHack is one of the oldest and arguably most impactful videogames in history,
 as well as being one of the hardest roguelikes currently being played by humans.

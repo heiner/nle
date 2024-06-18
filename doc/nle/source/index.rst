@@ -5,7 +5,7 @@ The NetHack Learning Environment (NLE) is an environment designed for machine
 learning and reinforcement learning research.
 
 It provides a standard, synchronous, reinforcement learning interface around the
-normal user (visual) interface of NetHack `3.6.6`.
+normal user (visual) interface of NetHack `3.6.7`.
 
 The game dynamics are largely unchanged, and the control interface mostly
 resembles the one used by people when playing the game.

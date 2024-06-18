@@ -5,12 +5,15 @@ looking to contribute to fundamental development.
 
 ## Preface
 
-The NLE Repo is a fork of [nethack/nethack](https://github.com/NetHack/NetHack/releases/tag/NetHack-3.6.6_PostRelease),
+The NLE Repo was originally a fork of [nethack/nethack](https://github.com/NetHack/NetHack/releases/tag/NetHack-3.6.6_PostRelease),
 the 3.6.6 post release (commit: `36ee184`), modified to allow for integration of
-a new interface to the game suitable for RL. The architecture can be thought of
-as operating at through various layers connecting the low C files that execute
-the game, up to the openai `gym` environment that just feeds back observations.
-Below we examine the these layers from lowest to highest:
+a new interface to the game suitable for RL. Subsequent modifications included
+upgrading the NetHack components to [3.6.7](https://github.com/NetHack/NetHack/releases/tag/NetHack-3.6.7_Released), retaining
+the changes needed for RL.
+
+The architecture can be thought of as operating at through various layers connecting 
+the low C files that execute the game, up to the Farama Foundation's `gymnasium` environment 
+that just feeds back observations. Below we examine the these layers from lowest to highest:
 
 
 ### Layer 0: “Original” NetHack Game Logic
