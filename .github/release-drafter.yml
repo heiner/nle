@@ -51,7 +51,9 @@ template: |
 
   $CHANGES
 
-  # Thanks to the following contributors for supporting the development of NLE! 🙏
+  # Acknowledgements
+  
+  Thanks to the following contributors for supporting the development of NLE! 🙏
 
   $CONTRIBUTORS
 ...
