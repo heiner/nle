@@ -1,31 +1,57 @@
 ---
-name-template: 'v$NEXT_PATCH_VERSION'
-tag-template: 'v$NEXT_PATCH_VERSION'
+# Title for release notes page
+name-template: 'v$RESOLVED_VERSION'
+
+# Tag to be used in GitHub for the release
+tag-template: 'v$RESOLVED_VERSION'
+
+# Group the PRs together for easy reading
 categories:
+  - title: '💣 BREAKING CHANGE'
+    label: 'breaking change'
   - title: '🚀 New Features'
     label: 'enhancement'
-  - title: '💣 Breaking Change'
-    label: 'breaking change'
   - title: '🐛 Bug Fixes'
     label: 'bug'
   - title: '📝 Documentation'
-    label: 'docs'
+    label: 'documentation'
   - title: '🔨 Maintenance'
-    label: 'chore'
+    label: 'maintenance'
+
 exclude-labels:
   - 'skip changelog'
+
 change-template: '- $TITLE (#$NUMBER, @$AUTHOR)'
+
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - 'breaking change'
+  minor:
+    labels:
+      - 'minor'
+      - 'enhancement'
+      - 'maintenance'
+  patch:
+    labels:
+      - 'patch'
+      - 'bug'
+      - 'documentation'
+  default: patch
+
 template: |
   # Installing NLE
 
-  Install with pip: `pip install nle==$NEXT_PATCH_VERSION`.
+  Install with pip: `pip install nle==$RESOLVED_VERSION`.
 
-  Or pull the docker image: `docker pull fairnle/nle:$NEXT_PATCH_VERSION`.
+  See [README.md](https://github.com/heiner/nle/blob/v$RESOLVED_VERSION/README.md) and/or [docker/README.md](https://github.com/heiner/nle/blob/v$RESOLVED_VERSION/docker/README.md) for further instructions.
 
-  See [README.md](https://github.com/heiner/nle/blob/v$NEXT_PATCH_VERSION/README.md) and/or [docker/README.md](https://github.com/heiner/nle/blob/v$NEXT_PATCH_VERSION/docker/README.md) for further instructions.
-
-
-  # New in NLE v$NEXT_PATCH_VERSION
+  # New in NLE v$RESOLVED_VERSION
 
   $CHANGES
+
+  # Thanks to the following contributors for supporting the development of NLE! 🙏
+
+  $CONTRIBUTORS
 ...
