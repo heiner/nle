@@ -198,6 +198,8 @@ class NLE(gym.Env):
         allow_all_modes=False,
         spawn_monsters=True,
         render_mode="human",
+        gamesavedir=None,
+        gameloaddir=None,
     ):
         """Constructs a new NLE environment.
 
@@ -317,6 +319,8 @@ class NLE(gym.Env):
             wizard=wizard,
             spawn_monsters=spawn_monsters,
             scoreprefix=scoreprefix,
+            gamesavedir=gamesavedir,
+            gameloaddir=gameloaddir,
         )
         self._close_nethack = weakref.finalize(self, self.nethack.close)
 
@@ -544,6 +548,9 @@ class NLE(gym.Env):
             return "\n".join([line.tobytes().decode("utf-8") for line in chars])
 
         return "\nInvalid render mode: " + mode
+
+    def save(self, gamesavedir=None):
+        return self.nethack.save(gamesavedir=gamesavedir)
 
     def __repr__(self):
         return "<%s>" % self.__class__.__name__
