@@ -175,6 +175,46 @@ jobs:
           python -m pytest --import-mode=append -svx $REPONAME/nle/tests
           popd
 
+  # Use prereleases to test publish the artefacts to testpypi
+  test_deploy:
+    name: Deploy artefacts to testpypi
+    needs: [test_sdist_3_11, test_manylinux_3_11]
+    if: github.event_name == 'release' && github.event.action == 'prereleased'
+    runs-on: ubuntu-latest
+    environment:
+      name: prerelease
+      url: https://testpypi.org/p/nle
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check version matches release tag
+        run: |
+          echo "v$(cat version.txt)"
+          echo "${{ github.event.release.tag_name }}"
+          [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
+          - name: Get sdist artifact # Get sdist artifact from the test_sdist job
+          uses: actions/download-artifact@v3
+          with:
+            name: python-sdist
+            path: dist
+      - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
+        uses: actions/download-artifact@v3
+        with:
+          name: python-wheels
+          path: dist
+      - name: Report dist contents
+        run: |
+          pwd
+          ls -R
+          ls -al .
+          ls -R dist/
+          ls -al dist/
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+        
   # TODO move this to separate workflow whenever github decides to provide basic
   #      functionalities like workflow dependencies :|
   deploy_sdist:
