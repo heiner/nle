@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 file(STRINGS "version.txt" NLE_VERSION)
-project(nle VERSION ${NLE_VERSION})
+# Remove any rcXX suffix from the version number as CMake doesn't like it
+string(REGEX REPLACE "rc[0-9+]$" "" CMAKE_NLE_VERSION ${NLE_VERSION})
+project(nle VERSION ${CMAKE_NLE_VERSION})
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   message("Debug build.")
@@ -30,7 +32,7 @@ else()
   message("Some other build type.")
 endif()
 
-message(STATUS "Building nle backend version: ${NLE_VERSION}")
+message(STATUS "Building nle backend version: ${CMAKE_NLE_VERSION}")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
