@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
   release:
-    types: [released]
+    types: [prereleased, released]
 jobs:
   test_repo:
     name: Test on ${{ matrix.os }} w/ Py${{ matrix.python-version }}
@@ -126,7 +126,7 @@ jobs:
         with:
           platforms: all
       - name: Build wheels
-        if: github.event_name != 'release' && github.event.action != 'released'
+        if: github.event_name != 'release'
         uses: pypa/cibuildwheel@v2.15.0 # The main configuration is in pyproject.toml
         env:
           CIBW_BUILD: "cp311-manylinux*" # Build only python 3.11 wheels for testing
@@ -135,7 +135,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             auditwheel show {wheel} && auditwheel repair -w {dest_dir} {wheel}
       - name: Build release wheels
-        if: github.event_name == 'release' && github.event.action == 'released'
+        if: github.event_name == 'release' && (github.event.action == 'released' || github.event.action == 'prereleased')
         uses: pypa/cibuildwheel@v2.15.0 # The main configuration is in pyproject.toml
         env:
           # Set NLE_RELEASE_BUILD to 1 to build release wheels
@@ -194,11 +194,11 @@ jobs:
           echo "v$(cat version.txt)"
           echo "${{ github.event.release.tag_name }}"
           [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
-          - name: Get sdist artifact # Get sdist artifact from the test_sdist job
-          uses: actions/download-artifact@v3
-          with:
-            name: python-sdist
-            path: dist
+      - name: Get sdist artifact # Get sdist artifact from the test_sdist job
+        uses: actions/download-artifact@v3
+        with:
+          name: python-sdist
+          path: dist
       - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
         uses: actions/download-artifact@v3
         with:
@@ -211,7 +211,7 @@ jobs:
           ls -al .
           ls -R dist/
           ls -al dist/
-      - name: Publish package to PyPI
+      - name: Publish package to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
