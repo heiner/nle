@@ -28,41 +28,6 @@ README](./README.nh), at [nethack.org](https://nethack.org/), and on the
 
 This version of NLE uses the [Farama Organisation Gymnasium Environment](https://gymnasium.farama.org) APIs.
 
-### NLE Language Wrapper
-
-We thank [ngoodger](https://github.com/ngoodger) for implementing the [NLE Language Wrapper](https://github.com/ngoodger/nle-language-wrapper) that translates the non-language observations from NetHack tasks into similar language representations. Actions can also be optionally provided in text form which are converted to the Discrete actions of the NLE.
-
-### NetHack Learning Dataset
-
-The NetHack Learning Dataset (NLD) code now ships with `NLE`, allowing users to the load large-scale datasets featured in [Dungeons and Data: A Large-Scale NetHack Dataset](), while also generating and loading their own datasets.
-
-```python
-import nle.dataset as nld
-
-if not nld.db.exists():
-    nld.db.create()
-    # NB: Different methods are used for data based on NLE and data from NAO.
-    nld.add_nledata_directory("/path/to/nld-aa", "nld-aa-v0")
-    nld.add_altorg_directory("/path/to/nld-nao", "nld-nao-v0")
-
-dataset = nld.TtyrecDataset("nld-aa-v0", batch_size=128, ...)
-for i, mb in enumerate(dataset):
-    foo(mb) # etc...
-```
-
-For information on how to download NLD-AA and NLD-NAO, see the dataset doc [here](./DATASET.md).
-
-Otherwise checkout the tutorial Colab notebook [here](https://colab.research.google.com/drive/1GRP15SbOEDjbyhJGMDDb2rXAptRQztUD?usp=sharing).
-
-# Papers using the NetHack Learning Environment
-- Izumiya and Simo-Serra [Inventory Management with Attention-Based Meta Actions](https://esslab.jp/~ess/publications/IzumiyaCOG2021.pdf) (Waseda University, CoG 2021).
-- Samvelyan et al. [MiniHack the Planet: A Sandbox for Open-Ended Reinforcement Learning Research](https://arxiv.org/abs/2109.13202) (FAIR, UCL, Oxford, NeurIPS 2021).
-- Zhang et al. [BeBold: Exploration Beyond the Boundary of Explored Regions](https://arxiv.org/abs/2012.08621) (Berkley, FAIR, Dec 2020).
-- Küttler et al. [The NetHack Learning Environment](https://arxiv.org/abs/2006.13760) (FAIR, Oxford, NYU, Imperial, UCL, NeurIPS 2020).
-
-Open a [pull
-request](https://github.com/heiner/nle/edit/main/README.md)
-to add papers.
 
 # Getting started
 
@@ -199,6 +164,42 @@ $ python -m nle.scripts.plot
       0           2e+08         4e+08         6e+08         8e+08         1e+09
                                        steps
 ```
+
+### NLE Language Wrapper
+
+We thank [ngoodger](https://github.com/ngoodger) for implementing the [NLE Language Wrapper](https://github.com/ngoodger/nle-language-wrapper) that translates the non-language observations from NetHack tasks into similar language representations. Actions can also be optionally provided in text form which are converted to the Discrete actions of the NLE.
+
+### NetHack Learning Dataset
+
+The NetHack Learning Dataset (NLD) code now ships with `NLE`, allowing users to the load large-scale datasets featured in [Dungeons and Data: A Large-Scale NetHack Dataset](), while also generating and loading their own datasets.
+
+```python
+import nle.dataset as nld
+
+if not nld.db.exists():
+    nld.db.create()
+    # NB: Different methods are used for data based on NLE and data from NAO.
+    nld.add_nledata_directory("/path/to/nld-aa", "nld-aa-v0")
+    nld.add_altorg_directory("/path/to/nld-nao", "nld-nao-v0")
+
+dataset = nld.TtyrecDataset("nld-aa-v0", batch_size=128, ...)
+for i, mb in enumerate(dataset):
+    foo(mb) # etc...
+```
+
+For information on how to download NLD-AA and NLD-NAO, see the dataset doc [here](./DATASET.md).
+
+Otherwise checkout the tutorial Colab notebook [here](https://colab.research.google.com/drive/1GRP15SbOEDjbyhJGMDDb2rXAptRQztUD?usp=sharing).
+
+# Papers using the NetHack Learning Environment
+- Izumiya and Simo-Serra [Inventory Management with Attention-Based Meta Actions](https://esslab.jp/~ess/publications/IzumiyaCOG2021.pdf) (Waseda University, CoG 2021).
+- Samvelyan et al. [MiniHack the Planet: A Sandbox for Open-Ended Reinforcement Learning Research](https://arxiv.org/abs/2109.13202) (FAIR, UCL, Oxford, NeurIPS 2021).
+- Zhang et al. [BeBold: Exploration Beyond the Boundary of Explored Regions](https://arxiv.org/abs/2012.08621) (Berkley, FAIR, Dec 2020).
+- Küttler et al. [The NetHack Learning Environment](https://arxiv.org/abs/2006.13760) (FAIR, Oxford, NYU, Imperial, UCL, NeurIPS 2020).
+
+Open a [pull
+request](https://github.com/heiner/nle/edit/main/README.md)
+to add papers.
 
 
 
