@@ -167,7 +167,7 @@ if __name__ == "__main__":
         python_requires=">=3.8",
         classifiers=[
             "License :: OSI Approved :: Nethack General Public License",
-            "Development Status :: 4 - Beta",
+            "Development Status :: 5 - Production/Stable",
             "Operating System :: POSIX :: Linux",
             "Operating System :: MacOS",
             "Programming Language :: Python :: 3",
