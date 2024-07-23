@@ -84,7 +84,7 @@ $ pre-commit install
 ## Docker
 
 We have provided some docker images. Please see the [relevant
-README](docker/README.md).
+README](https://github.com/heiner/nle/blob/main/docker/README.md). 
 
 
 ## Trying it out
@@ -187,7 +187,7 @@ for i, mb in enumerate(dataset):
     foo(mb) # etc...
 ```
 
-For information on how to download NLD-AA and NLD-NAO, see the dataset doc [here](./DATASET.md).
+For information on how to download NLD-AA and NLD-NAO, see the dataset doc [here](https://github.com/heiner/nle/blob/main/DATASET.md).
 
 Otherwise checkout the tutorial Colab notebook [here](https://colab.research.google.com/drive/1GRP15SbOEDjbyhJGMDDb2rXAptRQztUD?usp=sharing).
 
@@ -206,7 +206,7 @@ to add papers.
 # Contributing
 
 We welcome contributions to NLE. If you are interested in contributing please
-see [this document](./CONTRIBUTING.md).
+see [this document](https://github.com/heiner/nle/blob/main/CONTRIBUTING.md).
 
 
 # Architecture
@@ -218,7 +218,7 @@ repeated nethack games, and finally to binding of these games to Python
 `gymnasium` environment.
 
 If you want to learn more about the architecture of `nle` and how it works
-under the hood, checkout the [architecture document](./doc/nle/ARCHITECTURE.md).
+under the hood, checkout the [architecture document](https://github.com/heiner/nle/blob/main/doc/nle/ARCHITECTURE.md).
 This may be a useful starting point for anyone looking to contribute to the
 lower level elements of NLE.
 
