@@ -200,7 +200,21 @@ $ python -m nle.scripts.plot
                                        steps
 ```
 
+# Configuration file
 
+NetHack allows for players to modify some details about the configuration of the 
+game  (see options [here](https://nethackwiki.com/wiki/Options)). Some of these 
+configs may relate to the kind of messages being shown, the visual appearance 
+of the game or define macro-actions. Most NetHack players use such configurations, 
+see [this](https://www.hardfought.org/userdata/b/bouquet/nethack/bouquet.nhrc) 
+for example.
+
+To leverage the full spectrum of possibilities offered by NetHack, the `options`
+arugment in the NetHack [class definition](https://github.com/mklissa/nle/blob/main/nle/nethack/nethack.py#L165)
+needs to receive the location the nethack config file, prefixed by `@`.
+In the case where the config file is in the same directory as the launching script,
+the `options` argument should receive a value of `@.nethackrc` where `.nethackrc`
+is the name of the config file.
 
 # Contributing
 
