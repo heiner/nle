@@ -207,6 +207,9 @@ class Nethack:
         if options is None:
             options = NETHACKOPTIONS
 
+        # Check if the user has passed a configuration file to define the options.
+        # This is done by specifying the options variable as "@.nethackrc", 
+        # where .nethackrc is the file containing the configs.
         self.options = (
             list(options) + ["name:" + playername]
             if options[0][0] != "@"
