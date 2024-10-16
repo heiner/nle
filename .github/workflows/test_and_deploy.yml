@@ -108,7 +108,7 @@ jobs:
           popd
       - name: Save sdist
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-sdist
           path: dist/
@@ -117,7 +117,7 @@ jobs:
     needs: test_repo
     runs-on: ubuntu-20.04 # Can be also run for macOS
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Set up QEMU # Required for building manylinux aarch64 wheels on x86_64
@@ -141,7 +141,7 @@ jobs:
           # Set NLE_RELEASE_BUILD to 1 to build release wheels
           CIBW_ENVIRONMENT: "NLE_RELEASE_BUILD=1"
       - name: Save wheels
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-wheels
           path: ./wheelhouse/*.whl
@@ -160,7 +160,7 @@ jobs:
         with:
           submodules: true
       - name: Get wheels artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-wheels
           path: dist
@@ -195,12 +195,12 @@ jobs:
           echo "${{ github.event.release.tag_name }}"
           [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
       - name: Get sdist artifact # Get sdist artifact from the test_sdist job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-sdist
           path: dist
       - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-wheels
           path: dist
@@ -236,12 +236,12 @@ jobs:
           echo "${{ github.event.release.tag_name }}"
           [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
       - name: Get sdist artifact # Get sdist artifact from the test_sdist job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-sdist
           path: dist
       - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-wheels
           path: dist
