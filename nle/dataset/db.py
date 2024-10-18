@@ -162,8 +162,8 @@ def create_dataset(dataset_name, root, ttyrec_version=0, conn=None, commit=True)
 
 def delete_dataset(dataset_name, conn=None, commit=True):
     with db(conn, rw=True) as conn:
-        conn.execute("DELETE datasets WHERE dataset_name=?", (dataset_name,))
-        conn.execute("DELETE roots WHERE dataset_name=?", (dataset_name,))
+        conn.execute("DELETE FROM datasets WHERE dataset_name=?", (dataset_name,))
+        conn.execute("DELETE FROM roots WHERE dataset_name=?", (dataset_name,))
         conn.execute("UPDATE meta SET mtime = ?", (time.time(),))
         if commit:
             conn.commit()
