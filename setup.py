@@ -18,10 +18,10 @@
 #
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
-from distutils import spawn
-from distutils import sysconfig
+import sysconfig
 
 import setuptools
 from setuptools.command import build_ext
@@ -44,7 +44,7 @@ class CMakeBuild(build_ext.build_ext):
         os.makedirs(self.build_temp, exist_ok=True)
         build_type = "Debug" if self.debug else "Release"
 
-        generator = "Ninja" if spawn.find_executable("ninja") else "Unix Makefiles"
+        generator = "Ninja" if shutil.which("ninja") else "Unix Makefiles"
 
         use_seeding = os.environ.get("USE_SEEDING", "ON")
         use_seeding = {"1": "ON", "0": "OFF"}.get(use_seeding, use_seeding.upper())
@@ -60,7 +60,7 @@ class CMakeBuild(build_ext.build_ext):
             "-DCMAKE_INSTALL_PREFIX=%s" % sys.base_prefix,
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=%s" % output_path,
             "-DHACKDIR=%s" % hackdir_path,
-            "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_python_inc(),
+            "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["include"],
             "-DPYTHON_LIBRARY=%s" % sysconfig.get_config_var("LIBDIR"),
             "-DUSE_SEEDING=%s" % use_seeding,
         ]
@@ -175,6 +175,7 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.12",
             "Programming Language :: C",
             "Programming Language :: C++",
             "Topic :: Scientific/Engineering :: Artificial Intelligence",
