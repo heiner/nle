@@ -18,6 +18,7 @@
 #
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import sysconfig
@@ -43,7 +44,7 @@ class CMakeBuild(build_ext.build_ext):
         os.makedirs(self.build_temp, exist_ok=True)
         build_type = "Debug" if self.debug else "Release"
 
-        generator = "Ninja" if subprocess.run("ninja") else "Unix Makefiles"
+        generator = "Ninja" if shutil.which("ninja") else "Unix Makefiles"
 
         use_seeding = os.environ.get("USE_SEEDING", "ON")
         use_seeding = {"1": "ON", "0": "OFF"}.get(use_seeding, use_seeding.upper())
