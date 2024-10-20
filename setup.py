@@ -60,7 +60,7 @@ class CMakeBuild(build_ext.build_ext):
             "-DCMAKE_INSTALL_PREFIX=%s" % sys.base_prefix,
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=%s" % output_path,
             "-DHACKDIR=%s" % hackdir_path,
-            "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_python_inc(),
+            "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["include"],
             "-DPYTHON_LIBRARY=%s" % sysconfig.get_config_var("LIBDIR"),
             "-DUSE_SEEDING=%s" % use_seeding,
         ]
