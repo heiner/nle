@@ -20,8 +20,7 @@ import os
 import pathlib
 import subprocess
 import sys
-from distutils import spawn
-from distutils import sysconfig
+import sysconfig
 
 import setuptools
 from setuptools.command import build_ext
@@ -44,7 +43,7 @@ class CMakeBuild(build_ext.build_ext):
         os.makedirs(self.build_temp, exist_ok=True)
         build_type = "Debug" if self.debug else "Release"
 
-        generator = "Ninja" if spawn.find_executable("ninja") else "Unix Makefiles"
+        generator = "Ninja" if subprocess.run("ninja") else "Unix Makefiles"
 
         use_seeding = os.environ.get("USE_SEEDING", "ON")
         use_seeding = {"1": "ON", "0": "OFF"}.get(use_seeding, use_seeding.upper())
