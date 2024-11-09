@@ -1106,7 +1106,9 @@ phase_of_the_moon() /* 0-7, with 0: new, 4: full */
     if ((epact == 25 && goldn > 11) || epact == 24)
         epact++;
 
-    return ((((((diy + epact) * 6) + 11) % 177) / 22) & 7);
+    // return ((((((diy + epact) * 6) + 11) % 177) / 22) & 7);
+    // turn off game changes based on phase_of_the_moon
+    return 1;
 }
 
 boolean
@@ -1115,7 +1117,9 @@ friday_13th()
     register struct tm *lt = getlt();
 
     /* tm_wday (day of week; 0==Sunday) == 5 => Friday */
-    return (boolean) (lt->tm_wday == 5 && lt->tm_mday == 13);
+    // return (boolean) (lt->tm_wday == 5 && lt->tm_mday == 13);
+    // turn off game changes based on friday_13th
+    return (boolean) 0;
 }
 
 int
@@ -1123,13 +1127,17 @@ night()
 {
     register int hour = getlt()->tm_hour;
 
-    return (hour < 6 || hour > 21);
+    // return (hour < 6 || hour > 21);
+    // turn off game changes based on night
+    return 0;
 }
 
 int
 midnight()
 {
-    return (getlt()->tm_hour == 0);
+    // return (getlt()->tm_hour == 0);
+    // turn off game changes based on midnight
+    return 0;
 }
 
 /* strbuf_init() initializes strbuf state for use */
