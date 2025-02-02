@@ -7,7 +7,7 @@
 
 #include <fcontext/fcontext.h>
 
-#include "nleobs.h"
+#include "nletypes.h"
 
 /* TODO: Fix this. */
 #undef SIG_RET_TYPE

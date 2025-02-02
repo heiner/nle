@@ -1,6 +1,6 @@
 
-#ifndef NLEOBS_H
-#define NLEOBS_H
+#ifndef NLETYPES_H
+#define NLETYPES_H
 
 #define NLE_MESSAGE_SIZE 256
 #define NLE_BLSTATS_SIZE 27
@@ -100,4 +100,4 @@ typedef struct nle_settings {
     char ttyrecname[4096];
 } nle_settings;
 
-#endif /* NLEOBS_H */
+#endif /* NLETYPES_H */

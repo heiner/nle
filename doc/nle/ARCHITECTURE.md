@@ -72,7 +72,7 @@ user.
 - **part of `libnethack.so`**
 - **key directories & files** [`src/nle.c`](https://github.com/heiner/nle/blob/main/src/nle.c),
 [`include/nle.h`](https://github.com/heiner/nle/blob/main/include/nle.h),
-[`include/nleobs.h`](https://github.com/heiner/nle/blob/main/include/nleobs.h)
+[`include/nletypes.h`](https://github.com/heiner/nle/blob/main/include/nletypes.h)
 
 
 * In our case the user “playing” the game is not a terminal, but ultimately a
@@ -116,7 +116,7 @@ user.:
         * a struct that contains the stack type and the two contexts
         (`return_context`, `generator_context`) which are the user and
         nethack-stack contexts respectively.
-    * `nle_obs from include/nleobs.h`
+    * `nle_obs from include/nletypes.h`
         * a struct that contains the observations transferred between the two
         stacks/contexts
 

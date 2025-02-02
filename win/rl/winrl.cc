@@ -20,7 +20,7 @@ extern "C" {
 }
 
 extern "C" {
-#include "nleobs.h"
+#include "nletypes.h"
 }
 
 #define USE_DEBUG_API 0

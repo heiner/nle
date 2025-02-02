@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "nleobs.h"
+#include "nletypes.h"
 
 typedef struct nledl_ctx {
     char dlpath[1024];
