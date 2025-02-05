@@ -139,7 +139,10 @@ target_link_libraries(nethack PUBLIC m fcontext bz2_static tmt)
 
 # dlopen wrapper library
 add_library(nethackdl STATIC "sys/unix/nledl.c")
-target_include_directories(nethackdl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(
+  nethackdl
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+         ${CMAKE_CURRENT_SOURCE_DIR}/third_party/deboost.context/include)
 target_link_libraries(nethackdl PUBLIC dl)
 
 # rlmain C++ (test) binary

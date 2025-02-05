@@ -2,6 +2,9 @@
 #ifndef NLETYPES_H
 #define NLETYPES_H
 
+#include <stdio.h>
+#include <fcontext/fcontext.h>
+
 #define NLE_MESSAGE_SIZE 256
 #define NLE_BLSTATS_SIZE 27
 #define NLE_PROGRAM_STATE_SIZE 6
@@ -45,6 +48,17 @@
 /* #define NLE_ALLOW_SEEDING 1 */ /* Set in CMakeLists.txt if not disabled. */
 /* #define NLE_USE_TILES 1 */     /* Set in CMakeLists.txt. */
 
+/* NetHack defines boolean as follows:
+    typedef xchar boolean;      (global.h:80)
+    typedef schar xchar;        (global.h:73)
+    typedef signed char schar;  (config.h:420)
+    
+So we'll do the same to avoid having to include all of NetHack's types
+*/
+typedef signed char boolean;
+
+typedef struct TMT TMT;
+
 typedef struct nle_observation {
     int action;
     int done;
@@ -79,6 +93,25 @@ typedef struct {
     int _dummy; /* empty struct has size 0 in C, size 1 in C++ */
 #endif
 } nle_seeds_init_t;
+
+typedef struct nle_globals {
+    fcontext_stack_t stack;
+    fcontext_t returncontext;
+    fcontext_t generatorcontext;
+
+    FILE *ttyrec;
+    TMT *vterminal;
+    char outbuf[BUFSIZ];
+    char *outbuf_write_ptr;
+    char *outbuf_write_end;
+
+#ifdef NLE_BZ2_TTYRECS
+    void *ttyrec_bz2;
+#endif
+
+    boolean done;
+    nle_obs *observation;
+} nle_ctx_t;
 
 typedef struct nle_settings {
     /*
