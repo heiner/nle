@@ -60,8 +60,8 @@ before-all = "rm -rf {project}/build {project}/*.so {project}/CMakeCache.txt && 
 archs = "x86_64 aarch64"
 
 # Use manylinux2014 image for both x86_64 and aarch64
-manylinux-x86_64-image = "quay.io/pypa/manylinux2014_x86_64:2024.11.03-2"
-manylinux-aarch64-image = "quay.io/pypa/manylinux2014_aarch64:2024.11.03-2"
+manylinux-x86_64-image = "quay.io/pypa/manylinux2014_x86_64:2024.10.21-1"
+manylinux-aarch64-image = "quay.io/pypa/manylinux2014_aarch64:2024.10.21-1"
 
 [tool.cibuildwheel.macos]
 # For macOS wheels, we only need to install cmake
