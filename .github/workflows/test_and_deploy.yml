@@ -115,7 +115,7 @@ jobs:
   build_wheels:
     name: Build wheels on Ubuntu
     needs: [test_repo, test_sdist_3_8, test_sdist_3_12]
-    runs-on: ubuntu-20.04 # Can be also run for macOS
+    runs-on: ubuntu-22.04 # Can be also run for macOS
     steps:
       - uses: actions/checkout@v4
         with:
