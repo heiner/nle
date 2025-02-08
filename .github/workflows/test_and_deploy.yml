@@ -129,7 +129,9 @@ jobs:
         if: github.event_name != 'release'
         uses: pypa/cibuildwheel@v2.19.2 # The main configuration is in pyproject.toml
         env:
-          CIBW_BUILD: "cp312-manylinux*" # Build only python 3.12 wheels for testing
+          # Build of cp312-manylinux_aarch64 wheels failing, so restrict
+          # to only building _x86_64 wheel
+          CIBW_BUILD: "cp312-manylinux_x86_64" # Build only python 3.12 wheels for testing
           # Increase verbosity to see what's going on in the build in case of failure
           CIBW_BUILD_VERBOSITY: 3
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
