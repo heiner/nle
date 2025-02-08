@@ -88,8 +88,6 @@ set(NLE_UTIL_GEN ${nle_BINARY_DIR}/util)
 
 set(CMAKE_INSTALL_MESSAGE LAZY) # Don't tell us about up-to-date files.
 
-set(CMAKE_BUILD_PARALLEL_LEVEL 4) # Reduce the number of parallel jobs
-
 # EXCLUDE_FROM_ALL: Don't install this static library into /usr/local.
 add_subdirectory(third_party/deboost.context EXCLUDE_FROM_ALL)
 add_subdirectory(util)
