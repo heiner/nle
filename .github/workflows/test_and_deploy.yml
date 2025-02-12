@@ -143,12 +143,12 @@ jobs:
       - name: Save wheels
         uses: actions/upload-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
   test_manylinux_3_12:
     name: Test manylinux wheel on Ubuntu w/ Py3.12
     needs: build_wheels
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Setup Python 3.12 env
         uses: actions/setup-python@v5
@@ -162,7 +162,7 @@ jobs:
       - name: Get wheels artifacts
         uses: actions/download-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-ubuntu-latest
           path: dist
       - name: Install from wheel # Install wheel mathcing the Python version and architecture
         run: | 
@@ -199,10 +199,15 @@ jobs:
         with:
           name: python-sdist
           path: dist
-      - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
+      - name: Get wheels artifacts # Get x86 wheels artifacts from the build_wheels job
         uses: actions/download-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-ubuntu-latest
+          path: dist
+      - name: Get wheels artifacts # Get aarch64 wheels artifacts from the build_wheels job
+        uses: actions/download-artifact@v4
+        with:
+          name: python-wheels-ubuntu-24.04-arm
           path: dist
       - name: Report dist contents
         run: |
@@ -240,10 +245,15 @@ jobs:
         with:
           name: python-sdist
           path: dist
-      - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
+      - name: Get wheels artifacts # Get x86 wheels artifacts from the build_wheels job
         uses: actions/download-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-ubuntu-latest
+          path: dist
+      - name: Get wheels artifacts # Get aarch64 wheels artifacts from the build_wheels job
+        uses: actions/download-artifact@v4
+        with:
+          name: python-wheels-ubuntu-24.04-arm
           path: dist
       - name: Report dist contents
         run: |
