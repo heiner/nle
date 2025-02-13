@@ -56,8 +56,10 @@ build = "cp{38,39,310,311,312}-manylinux*"
 # and install the dependencies using yum, as manylinux2014 image is CentOS 7-based
 before-all = "rm -rf {project}/build {project}/*.so {project}/CMakeCache.txt && yum install -y autoconf bison cmake flex git libtool"
 
-# Only x86_64 and aarch64 (ARM) architectures are supported
-archs = "x86_64 aarch64"
+# Build for the architecure of the runner in the GitHub Actions workflow:
+# ubuntu-20.04 -> x86_64
+# ubuntu-24.04-arm -> aarch64
+archs = "native"
 
 # Use manylinux2014 image for both x86_64 and aarch64
 manylinux-x86_64-image = "manylinux2014"

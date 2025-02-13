@@ -115,21 +115,21 @@ jobs:
   build_wheels:
     name: Build wheels on Ubuntu
     needs: test_repo
-    runs-on: ubuntu-20.04 # Can be also run for macOS
+    runs-on: ${{ matrix.os }} # Can be also run for macOS
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Set up QEMU # Required for building manylinux aarch64 wheels on x86_64
-        if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: all
       - name: Build wheels
         if: github.event_name != 'release'
         uses: pypa/cibuildwheel@v2.19.2 # The main configuration is in pyproject.toml
         env:
-          CIBW_BUILD: "cp312-manylinux*" # Build only python 3.12 wheels for testing
+          # Build of cp312-manylinux_aarch64 wheels failing, so restrict
+          # to only building _x86_64 wheel
+          CIBW_BUILD: "cp312-manylinux_*" # Build only python 3.12 wheels for testing
           # Increase verbosity to see what's going on in the build in case of failure
           CIBW_BUILD_VERBOSITY: 3
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
@@ -143,12 +143,12 @@ jobs:
       - name: Save wheels
         uses: actions/upload-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
   test_manylinux_3_12:
     name: Test manylinux wheel on Ubuntu w/ Py3.12
     needs: build_wheels
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Setup Python 3.12 env
         uses: actions/setup-python@v5
@@ -162,7 +162,7 @@ jobs:
       - name: Get wheels artifacts
         uses: actions/download-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-ubuntu-latest
           path: dist
       - name: Install from wheel # Install wheel mathcing the Python version and architecture
         run: | 
@@ -199,10 +199,15 @@ jobs:
         with:
           name: python-sdist
           path: dist
-      - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
+      - name: Get wheels artifacts # Get x86 wheels artifacts from the build_wheels job
         uses: actions/download-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-ubuntu-latest
+          path: dist
+      - name: Get wheels artifacts # Get aarch64 wheels artifacts from the build_wheels job
+        uses: actions/download-artifact@v4
+        with:
+          name: python-wheels-ubuntu-24.04-arm
           path: dist
       - name: Report dist contents
         run: |
@@ -240,10 +245,15 @@ jobs:
         with:
           name: python-sdist
           path: dist
-      - name: Get wheels artifacts # Get wheels artifacts from the build_wheels job
+      - name: Get wheels artifacts # Get x86 wheels artifacts from the build_wheels job
         uses: actions/download-artifact@v4
         with:
-          name: python-wheels
+          name: python-wheels-ubuntu-latest
+          path: dist
+      - name: Get wheels artifacts # Get aarch64 wheels artifacts from the build_wheels job
+        uses: actions/download-artifact@v4
+        with:
+          name: python-wheels-ubuntu-24.04-arm
           path: dist
       - name: Report dist contents
         run: |
