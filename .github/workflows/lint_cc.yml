@@ -15,5 +15,5 @@ jobs:
       - uses: DoozyX/clang-format-lint-action@v0.12
         with:
           source: win/rl src/nle.c sys/unix/nledl.c include/nle.h include/nledl.h
-            include/nletypes.h
+            include/nletypes.h include/nlernd.h src/nlernd.c
           clangFormatVersion: 12
