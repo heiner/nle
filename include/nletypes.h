@@ -3,6 +3,7 @@
 #define NLETYPES_H
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <fcontext/fcontext.h>
 
 #define NLE_MESSAGE_SIZE 256
@@ -89,6 +90,7 @@ typedef struct {
 #ifdef NLE_ALLOW_SEEDING
     unsigned long seeds[2]; /* core, disp */
     char reseed; /* boolean: use NetHack's anti-TAS reseed mechanism? */
+    bool use_init_seeds; /* bool to tell NLE if seeds were provided */
 #else
     int _dummy; /* empty struct has size 0 in C, size 1 in C++ */
 #endif
@@ -131,6 +133,10 @@ typedef struct nle_settings {
      * Filename for nle's ttyrec*.bz2.
      */
     char ttyrecname[4096];
+
+    /* Initial seeds for the RNGs */
+    nle_seeds_init_t initial_seeds;
+
 } nle_settings;
 
 #endif /* NLETYPES_H */

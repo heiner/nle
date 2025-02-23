@@ -210,6 +210,7 @@ nle/nethackdir
 # CMake
 CMakeFiles
 CMakeCache.txt
+CMakePresets.json
 
 # cibuildwheel
 wheelhouse/

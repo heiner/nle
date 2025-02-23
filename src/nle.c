@@ -32,8 +32,6 @@
 
 extern int unixmain(int, char **);
 
-extern nle_seeds_init_t *nle_seeds_init;
-
 signed char
 vt_char_color_extract(TMTCHAR *c)
 {
@@ -391,8 +389,7 @@ nle_fopen_wizkit_file()
 }
 
 nle_ctx_t *
-nle_start(nle_obs *obs, FILE *ttyrec, nle_seeds_init_t *seed_init,
-          nle_settings *settings_p)
+nle_start(nle_obs *obs, FILE *ttyrec, nle_settings *settings_p)
 {
     /* Set CO and LI to control ttyrec output size. */
     CO = NLE_TERM_CO;
@@ -401,7 +398,6 @@ nle_start(nle_obs *obs, FILE *ttyrec, nle_seeds_init_t *seed_init,
     settings = *settings_p;
 
     nle_ctx_t *nle = init_nle(ttyrec, obs);
-    nle_seeds_init = seed_init;
 
     nle->stack = create_fcontext_stack(STACK_SIZE);
     nle->generatorcontext =
@@ -412,8 +408,6 @@ nle_start(nle_obs *obs, FILE *ttyrec, nle_seeds_init_t *seed_init,
     nle->generatorcontext = t.ctx;
     nle->done = (t.data == NULL);
     obs->done = nle->done;
-    nle_seeds_init =
-        NULL; /* Don't set to *these* seeds on subsequent reseeds, if any. */
 
     if (nle->ttyrec) {
         if (obs->blstats) {

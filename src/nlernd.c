@@ -12,7 +12,8 @@ extern int FDECL(set_random, (unsigned long, int FDECL((*fn), (int) )));
    as seed for the random number generator */
 extern unsigned long NDECL(sys_random_seed);
 
-nle_seeds_init_t *nle_seeds_init;
+/* NLE settings contains the initial RNG seeds */
+extern nle_settings settings;
 
 /*
  * Initializes the random number generator.
@@ -22,9 +23,9 @@ void
 init_random(int FDECL((*fn), (int) ))
 {
 #ifdef NLE_ALLOW_SEEDING
-    if (nle_seeds_init) {
-        set_random(nle_seeds_init->seeds[whichrng(fn)], fn);
-        has_strong_rngseed = nle_seeds_init->reseed;
+    if (settings.initial_seeds.use_init_seeds) {
+        set_random(settings.initial_seeds.seeds[whichrng(fn)], fn);
+        has_strong_rngseed = settings.initial_seeds.reseed;
         return;
     }
 #endif

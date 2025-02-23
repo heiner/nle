@@ -19,7 +19,7 @@
  */
 nle_ctx_t *current_nle_ctx;
 
-nle_ctx_t *nle_start(nle_obs *, FILE *, nle_seeds_init_t *, nle_settings *);
+nle_ctx_t *nle_start(nle_obs *, FILE *, nle_settings *);
 nle_ctx_t *nle_step(nle_ctx_t *, nle_obs *);
 void nle_end(nle_ctx_t *);
 
