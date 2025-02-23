@@ -259,8 +259,6 @@ class TestGymEnvRollout:
 
     def test_seed_interface_output(self, env_name, rollout_len):
         """Tests whether env.seed output can be reused correctly."""
-        if not nethack.NLE_ALLOW_SEEDING:
-            return  # Nothing to test.
         if env_name.startswith("NetHackChallenge"):
             pytest.skip("Not running seed test on NetHackChallenge")
 
@@ -277,8 +275,6 @@ class TestGymEnvRollout:
 
     def test_seed_rollout_seeded(self, env_name, rollout_len):
         """Tests that two seeded envs return same step data."""
-        if not nethack.NLE_ALLOW_SEEDING:
-            return  # Nothing to test.
         if env_name.startswith("NetHackChallenge"):
             pytest.skip("Not running seed test on NetHackChallenge")
 
@@ -302,8 +298,6 @@ class TestGymEnvRollout:
 
     def test_seed_rollout_seeded_int(self, env_name, rollout_len):
         """Tests that two seeded envs return same step data."""
-        if not nethack.NLE_ALLOW_SEEDING:
-            return  # Nothing to test.
         if env_name.startswith("NetHackChallenge"):
             pytest.skip("Not running seed test on NetHackChallenge")
 
@@ -468,9 +462,6 @@ class TestNetHackChallenge:
             RuntimeError, match="NetHackChallenge doesn't allow seed changes"
         ):
             env.unwrapped.seed()
+
         with pytest.raises(RuntimeError, match="Should not try changing seeds"):
             env.unwrapped.nethack.set_initial_seeds(0, 0, True)
-
-        if not nethack.NLE_ALLOW_SEEDING:
-            with pytest.raises(RuntimeError, match="Seeding not enabled"):
-                env.unwrapped.nethack._pynethack.set_initial_seeds(0, 0, True)

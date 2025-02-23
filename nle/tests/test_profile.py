@@ -55,8 +55,6 @@ class TestProfile:
         actions = np.random.choice(env.action_space.n, size=steps)
 
         def seed():
-            if not nle.nethack.NLE_ALLOW_SEEDING:
-                return
             nonlocal seeds
             seeds += 1
             env.unwrapped.seed(seeds, 2 * seeds)

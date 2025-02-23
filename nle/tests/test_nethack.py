@@ -119,8 +119,6 @@ class TestNetHack:
             game1.close()
 
     def test_set_initial_seeds(self):
-        if not nethack.NLE_ALLOW_SEEDING:
-            return  # Nothing to test.
         game = nethack.Nethack(copy=True)
         game.set_initial_seeds(core=42, disp=666)
         obs0 = game.reset()
@@ -135,9 +133,6 @@ class TestNetHack:
             game.close()
 
     def test_set_seed_after_reset(self, game):
-        if not nethack.NLE_ALLOW_SEEDING:
-            return  # Nothing to test.
-
         game.reset()
         # Could fail on a system without a good source of randomness:
         assert game.get_current_seeds()[2] is True

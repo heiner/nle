@@ -22,14 +22,12 @@ extern nle_settings settings;
 void
 init_random(int FDECL((*fn), (int) ))
 {
-#ifdef NLE_ALLOW_SEEDING
     if (settings.initial_seeds.use_init_seeds) {
         set_random(settings.initial_seeds.seeds[whichrng(fn)], fn);
         has_strong_rngseed = settings.initial_seeds.reseed;
-        return;
+    } else {
+        set_random(sys_random_seed(), fn);
     }
-#endif
-    set_random(sys_random_seed(), fn);
 }
 
 void

@@ -46,7 +46,6 @@
 #define NLE_BL_CONDITION 25 /* condition bit mask */
 #define NLE_BL_ALIGN 26
 
-/* #define NLE_ALLOW_SEEDING 1 */ /* Set in CMakeLists.txt if not disabled. */
 /* #define NLE_USE_TILES 1 */     /* Set in CMakeLists.txt. */
 
 /* NetHack defines boolean as follows:
@@ -87,13 +86,9 @@ typedef struct nle_observation {
 } nle_obs;
 
 typedef struct {
-#ifdef NLE_ALLOW_SEEDING
     unsigned long seeds[2]; /* core, disp */
     char reseed; /* boolean: use NetHack's anti-TAS reseed mechanism? */
     bool use_init_seeds; /* bool to tell NLE if seeds were provided */
-#else
-    int _dummy; /* empty struct has size 0 in C, size 1 in C++ */
-#endif
 } nle_seeds_init_t;
 
 typedef struct nle_globals {
