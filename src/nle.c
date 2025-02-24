@@ -399,6 +399,11 @@ nle_start(nle_obs *obs, FILE *ttyrec, nle_settings *settings_p)
 
     nle_ctx_t *nle = init_nle(ttyrec, obs);
 
+    /* if there's a level generation seed, then initialise the RNG */
+    if(settings.initial_seeds.use_lgen_seed) {
+        init_lgen_state(settings.initial_seeds.lgen_seed);
+    }
+
     nle->stack = create_fcontext_stack(STACK_SIZE);
     nle->generatorcontext =
         make_fcontext(nle->stack.sptr, nle->stack.ssize, mainloop);

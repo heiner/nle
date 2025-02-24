@@ -5,6 +5,9 @@
 
 #include "hack.h"
 
+/* NLE RNG modifiers */
+#include "nlernd.h"
+
 /* for UNIX, Rand #def'd to (long)lrand48() or (long)random() */
 /* croom->lx etc are schar (width <= int), so % arith ensures that */
 /* conversion of result to int is reasonable */
@@ -996,6 +999,9 @@ mklev()
     reseed_random(rn2);
     reseed_random(rn2_on_display_rng);
 
+    /* NLE: Use the level generation RNG if required */
+    nle_swap_to_lgen();
+
     init_mapseen(&u.uz);
     if (getbones())
         return;
@@ -1030,6 +1036,9 @@ mklev()
        now so that they never do and no one will be tempted to introduce
        a new use of them for anything on this level */
     dnstairs_room = upstairs_room = sstairs_room = (struct mkroom *) 0;
+
+    /* NLE: Restore CORE RNG state if required */
+    nle_swap_to_core();
 
     reseed_random(rn2);
     reseed_random(rn2_on_display_rng);

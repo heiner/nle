@@ -19,7 +19,9 @@ struct rnglist_t {
 
 enum { CORE = 0, DISP = 1 };
 
-static struct rnglist_t rnglist[] = {
+/* For NLE purposes, remove the static storage class so
+   that we can see the RNG states from our own functions. */
+struct rnglist_t rnglist[] = {
     { rn2, FALSE, { 0 } },                      /* CORE */
     { rn2_on_display_rng, FALSE, { 0 } },       /* DISP */
 };

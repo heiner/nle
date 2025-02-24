@@ -498,7 +498,7 @@ class NLE(gym.Env):
         if disp is None:
             disp = self._random.randrange(sys.maxsize)
         self.nethack.set_initial_seeds(core, disp, reseed, lgen)
-        return (core, disp, reseed)
+        return (core, disp, reseed, lgen)
 
     def get_seeds(self):
         """Returns current seeds.

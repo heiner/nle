@@ -1,7 +1,14 @@
 #include "nlernd.h"
 #include "hack.h"
+#include "isaac64.h"
 
 /* See rng.c. */
+struct rnglist_t {
+    int FDECL((*fn), (int));
+    boolean init;
+    isaac64_ctx rng_state;
+};
+extern struct rnglist_t rnglist[];
 extern int FDECL(whichrng, (int FDECL((*fn), (int) )));
 
 /* See hacklib.c. */
@@ -27,6 +34,54 @@ init_random(int FDECL((*fn), (int) ))
         has_strong_rngseed = settings.initial_seeds.reseed;
     } else {
         set_random(sys_random_seed(), fn);
+    }
+}
+
+static struct isaac64_ctx nle_lgen_state; /* State of the level generation RNG */
+static struct isaac64_ctx nle_core_state; /* State of the core RNG */
+static bool lgen_initialised = false;
+
+/* Seeding function to initialise the fixed-level rng.
+   Borrowed from init_isaac64 in NetHack's rnd.c */
+void init_lgen_state(unsigned long seed)
+{
+    unsigned char new_rng_state[sizeof seed];
+    unsigned i;
+
+    for (i = 0; i < sizeof seed; i++) {
+        new_rng_state[i] = (unsigned char) (seed & 0xFF);
+        seed >>= 8;
+    }
+
+    isaac64_init(&nle_lgen_state, new_rng_state,
+                 (int) sizeof seed);
+
+    lgen_initialised = true;
+}
+
+void nle_swap_to_lgen(void)
+{
+    if(lgen_initialised) {
+        int core_rng = whichrng(rn2);
+
+        /* stash the current core state */
+        nle_core_state = rnglist[core_rng].rng_state;
+    
+        /* copy the current lgen state */
+        rnglist[core_rng].rng_state = nle_lgen_state;        
+    }
+}
+
+void nle_swap_to_core(void)
+{
+    if(lgen_initialised) {
+        int core_rng = whichrng(rn2);
+
+        /* stash the current lgen state */
+        nle_lgen_state = rnglist[core_rng].rng_state;
+
+        /* restore the core state */
+        rnglist[core_rng].rng_state = nle_core_state;
     }
 }
 
