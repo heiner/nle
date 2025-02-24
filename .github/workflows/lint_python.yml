@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: '3.12'
       - uses: actions/checkout@v4
-      - run: pip install -q uv && uv pip install --system ruff isort
+      - run: pip install -q uv && uv pip install --system ruff==0.4.3 isort
       - run: ruff format --check --diff .
       - run: ruff check
       - run: isort -c --diff nle/
