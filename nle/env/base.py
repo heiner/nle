@@ -465,7 +465,7 @@ class NLE(gym.Env):
         self._close_nethack()
         super().close()
 
-    def seed(self, core=None, disp=None, reseed=False):
+    def seed(self, core=None, disp=None, reseed=False, lgen=None):
         """Sets the state of the NetHack RNGs after the next reset.
 
         NetHack 3.6 uses two RNGs, core and disp. This is to prevent
@@ -473,6 +473,10 @@ class NLE(gym.Env):
         actual game state. This is a measure against "tool-assisted
         speedruns" (TAS). NLE can run in both NetHack's default mode and in
         TAS-friendly "no reseeding" if `reseed` is set to False, see below.
+
+        lgen allows the user to use a different RNG to generate the levels in
+        NetHack so that the levels become fixed and independent from the in-game
+        choices.
 
         Arguments:
             core [int or None]: Seed for the core RNG. If None, chose a random
@@ -483,6 +487,8 @@ class NLE(gym.Env):
                 NetHack 3.6 reseeds with true randomness every now and then. This
                 flag enables or disables this behavior. If set to True, trajectories
                 won't be reproducible.
+            lgen [int or None]: Seed for the level generator, used for RNG when
+                NetHack generates new levels.
 
         Returns:
             [tuple] The seeds supplied, in the form (core, disp, reseed).
@@ -491,7 +497,7 @@ class NLE(gym.Env):
             core = self._random.randrange(sys.maxsize)
         if disp is None:
             disp = self._random.randrange(sys.maxsize)
-        self.nethack.set_initial_seeds(core, disp, reseed)
+        self.nethack.set_initial_seeds(core, disp, reseed, lgen)
         return (core, disp, reseed)
 
     def get_seeds(self):

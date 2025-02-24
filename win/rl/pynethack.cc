@@ -128,6 +128,7 @@ class Nethack
                     ttyrec.length() - found - 1);
 
         settings_.initial_seeds.use_init_seeds = false;
+        settings_.initial_seeds.use_lgen_seed = false;
     }
 
     Nethack(std::string dlpath, std::string hackdir,
@@ -283,6 +284,14 @@ class Nethack
     }
 
     void
+    set_initial_seeds(unsigned long core, unsigned long disp, bool reseed, unsigned long lgen)
+    {
+        settings_.initial_seeds.lgen_seed = lgen;
+        settings_.initial_seeds.use_lgen_seed = true;
+        set_initial_seeds(core, disp, reseed);
+    }
+
+    void
     set_seeds(unsigned long core, unsigned long disp, bool reseed)
     {
         if (!nle_)
@@ -387,7 +396,10 @@ PYBIND11_MODULE(_pynethack, m)
              py::arg("tty_colors") = py::none(),
              py::arg("tty_cursor") = py::none(), py::arg("misc") = py::none())
         .def("close", &Nethack::close)
-        .def("set_initial_seeds", &Nethack::set_initial_seeds)
+        .def("set_initial_seeds", py::overload_cast<unsigned long, unsigned long,
+            bool>(&Nethack::set_initial_seeds))
+        .def("set_initial_seeds", py::overload_cast<unsigned long, unsigned long,
+            bool, unsigned long>(&Nethack::set_initial_seeds))
         .def("set_seeds", &Nethack::set_seeds)
         .def("get_seeds", &Nethack::get_seeds)
         .def("in_normal_game", &Nethack::in_normal_game)

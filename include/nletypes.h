@@ -89,6 +89,8 @@ typedef struct {
     unsigned long seeds[2]; /* core, disp */
     char reseed; /* boolean: use NetHack's anti-TAS reseed mechanism? */
     bool use_init_seeds; /* bool to tell NLE if seeds were provided */
+    unsigned long lgen_seed; /* seed for level generation RNG */
+    bool use_lgen_seed; /* bool to tell NLE to use level generation RNG */
 } nle_seeds_init_t;
 
 typedef struct nle_globals {

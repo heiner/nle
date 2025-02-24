@@ -280,8 +280,11 @@ class Nethack:
         self._dl = None
         self._tempdir = None
 
-    def set_initial_seeds(self, core, disp, reseed=False):
-        self._pynethack.set_initial_seeds(core, disp, reseed)
+    def set_initial_seeds(self, core, disp, reseed=False, lgen=None):
+        if lgen is None:
+            self._pynethack.set_initial_seeds(core, disp, reseed)
+        else:
+            self._pynethack.set_initial_seeds(core, disp, reseed, lgen)
 
     def set_current_seeds(self, core=None, disp=None, reseed=False):
         """Sets the seeds of NetHack right now.
