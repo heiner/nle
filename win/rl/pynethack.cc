@@ -340,7 +340,7 @@ class Nethack
                              ttyrec ? ttyrec : ttyrec_, &settings_);
         } else
             nle_reset(nle_, &obs_, ttyrec, &settings_);
-        *seeded = false; /* Once the seeds have been used, prevent them being 
+        *seeded = false; /* Once the seeds have been used, prevent them being
                             reused. */
 
         if (obs_.done)
