@@ -2,9 +2,9 @@
 #ifndef NLETYPES_H
 #define NLETYPES_H
 
-#include <stdio.h>
-#include <stdbool.h>
 #include <fcontext/fcontext.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 #define NLE_MESSAGE_SIZE 256
 #define NLE_BLSTATS_SIZE 27
@@ -46,13 +46,13 @@
 #define NLE_BL_CONDITION 25 /* condition bit mask */
 #define NLE_BL_ALIGN 26
 
-/* #define NLE_USE_TILES 1 */     /* Set in CMakeLists.txt. */
+/* #define NLE_USE_TILES 1 */ /* Set in CMakeLists.txt. */
 
 /* NetHack defines boolean as follows:
     typedef xchar boolean;      (global.h:80)
     typedef schar xchar;        (global.h:73)
     typedef signed char schar;  (config.h:420)
-    
+
 So we'll do the same to avoid having to include all of NetHack's types
 */
 typedef signed char boolean;

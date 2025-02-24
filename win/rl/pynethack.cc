@@ -336,12 +336,12 @@ class Nethack
 
         bool *seeded = &(settings_.initial_seeds.use_init_seeds);
         if (!nle_) {
-            nle_ =
-                nle_start(dlpath_.c_str(), &obs_, ttyrec ? ttyrec : ttyrec_,
-                          &settings_);
+            nle_ = nle_start(dlpath_.c_str(), &obs_,
+                             ttyrec ? ttyrec : ttyrec_, &settings_);
         } else
             nle_reset(nle_, &obs_, ttyrec, &settings_);
-        *seeded = false; /* Once the seeds have been used, prevent them being reused. */
+        *seeded = false; /* Once the seeds have been used, prevent them being 
+                            reused. */
 
         if (obs_.done)
             throw std::runtime_error("NetHack done right after reset");
