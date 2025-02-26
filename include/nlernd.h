@@ -9,7 +9,7 @@ Set of functions to manipulate NetHack's Random Number Generators
 
 #include "nletypes.h"
 
-void init_lgen_state(unsigned long);
+void nle_init_lgen_state();
 void nle_swap_to_lgen(void);
 void nle_swap_to_core(void);
 

@@ -43,20 +43,27 @@ static bool lgen_initialised = false;
 
 /* Seeding function to initialise the fixed-level rng.
    Borrowed from init_isaac64 in NetHack's rnd.c */
-void init_lgen_state(unsigned long seed)
+void nle_init_lgen_state()
 {
-    unsigned char new_rng_state[sizeof seed];
-    unsigned i;
+    if(settings.initial_seeds.use_lgen_seed) {
 
-    for (i = 0; i < sizeof seed; i++) {
-        new_rng_state[i] = (unsigned char) (seed & 0xFF);
-        seed >>= 8;
+        unsigned long seed = settings.initial_seeds.lgen_seed;
+
+        unsigned char new_rng_state[sizeof seed];
+        unsigned i;
+
+        for (i = 0; i < sizeof seed; i++) {
+            new_rng_state[i] = (unsigned char) (seed & 0xFF);
+            seed >>= 8;
+        }
+
+        isaac64_init(&nle_lgen_state, new_rng_state,
+                    (int) sizeof seed);
+
+        lgen_initialised = true;
+    } else {
+        lgen_initialised = false; 
     }
-
-    isaac64_init(&nle_lgen_state, new_rng_state,
-                 (int) sizeof seed);
-
-    lgen_initialised = true;
 }
 
 void nle_swap_to_lgen(void)
