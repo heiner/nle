@@ -851,8 +851,9 @@ extern struct tm *FDECL(localtime, (time_t *));
 #endif
 STATIC_DCL struct tm *NDECL(getlt);
 
-/* NLE hack for seeds. Should stay in sync with rnglist in src/rnd.c. */
-unsigned long nle_seeds[] = {0L, 0L};
+/* NLE hack for seeds. Should stay in sync with rnglist in src/rnd.c.
+   plus one other RNG seed for level generation. See nlernd.c */
+extern unsigned long nle_seeds[];
 extern int FDECL(whichrng, (int FDECL((*fn), (int))));
 
 /* Sets the seed for the random number generator */

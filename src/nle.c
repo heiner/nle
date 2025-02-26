@@ -399,8 +399,8 @@ nle_start(nle_obs *obs, FILE *ttyrec, nle_settings *settings_p)
 
     nle_ctx_t *nle = init_nle(ttyrec, obs);
 
-    /* Initialise the state and control flag of our own RNG */
-    nle_init_lgen_state();
+    /* Initialise the level generation RNG */
+    nle_init_lgen_rng();
 
     nle->stack = create_fcontext_stack(STACK_SIZE);
     nle->generatorcontext =

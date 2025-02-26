@@ -275,41 +275,35 @@ class Nethack
     }
 
     void
-    set_initial_seeds(unsigned long core, unsigned long disp, bool reseed)
+    set_initial_seeds(unsigned long core, unsigned long disp, unsigned long lgen, bool reseed)
     {
         settings_.initial_seeds.seeds[0] = core;
         settings_.initial_seeds.seeds[1] = disp;
         settings_.initial_seeds.reseed = reseed;
         settings_.initial_seeds.use_init_seeds = true;
-    }
-
-    void
-    set_initial_seeds(unsigned long core, unsigned long disp, bool reseed, unsigned long lgen)
-    {
         settings_.initial_seeds.lgen_seed = lgen;
         settings_.initial_seeds.use_lgen_seed = true;
-        set_initial_seeds(core, disp, reseed);
     }
 
     void
-    set_seeds(unsigned long core, unsigned long disp, bool reseed)
+    set_seeds(unsigned long core, unsigned long disp, bool reseed, unsigned long lgen)
     {
         if (!nle_)
             throw std::runtime_error("set_seed called without reset()");
-        nle_set_seed(nle_, core, disp, reseed);
+        nle_set_seed(nle_, core, disp, reseed, lgen);
     }
 
-    std::tuple<unsigned long, unsigned long, bool>
+    std::tuple<unsigned long, unsigned long, unsigned long, bool>
     get_seeds()
     {
         if (!nle_)
             throw std::runtime_error("get_seed called without reset()");
-        std::tuple<unsigned long, unsigned long, bool> result;
+        std::tuple<unsigned long, unsigned long, unsigned long, bool> result;
         char
             reseed; /* NetHack's booleans are not necessarily C++ bools ... */
         nle_get_seed(nle_, &std::get<0>(result), &std::get<1>(result),
-                     &reseed);
-        std::get<2>(result) = reseed;
+                     &std::get<2>(result), &reseed);
+        std::get<3>(result) = reseed;
         return result;
     }
 
@@ -397,10 +391,7 @@ PYBIND11_MODULE(_pynethack, m)
              py::arg("tty_colors") = py::none(),
              py::arg("tty_cursor") = py::none(), py::arg("misc") = py::none())
         .def("close", &Nethack::close)
-        .def("set_initial_seeds", py::overload_cast<unsigned long, unsigned long,
-            bool>(&Nethack::set_initial_seeds))
-        .def("set_initial_seeds", py::overload_cast<unsigned long, unsigned long,
-            bool, unsigned long>(&Nethack::set_initial_seeds))
+        .def("set_initial_seeds", &Nethack::set_initial_seeds)
         .def("set_seeds", &Nethack::set_seeds)
         .def("get_seeds", &Nethack::get_seeds)
         .def("in_normal_game", &Nethack::in_normal_game)

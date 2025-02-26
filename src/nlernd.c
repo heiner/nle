@@ -37,33 +37,38 @@ init_random(int FDECL((*fn), (int) ))
     }
 }
 
+unsigned long nle_seeds[] = {0L, 0L, 0L};
+
 static struct isaac64_ctx nle_lgen_state; /* State of the level generation RNG */
 static struct isaac64_ctx nle_core_state; /* State of the core RNG */
 static bool lgen_initialised = false;
 
-/* Seeding function to initialise the fixed-level rng.
+/* Seeding function to initialise the fixed-level rng state.
    Borrowed from init_isaac64 in NetHack's rnd.c */
-void nle_init_lgen_state()
+void nle_init_lgen_state(unsigned long seed)
+{
+    unsigned char new_rng_state[sizeof seed];
+    unsigned i;
+
+    for (i = 0; i < sizeof seed; i++) {
+        new_rng_state[i] = (unsigned char) (seed & 0xFF);
+        seed >>= 8;
+    }
+
+    isaac64_init(&nle_lgen_state, new_rng_state,
+                (int) sizeof seed);
+}
+
+void nle_init_lgen_rng()
 {
     if(settings.initial_seeds.use_lgen_seed) {
-
-        unsigned long seed = settings.initial_seeds.lgen_seed;
-
-        unsigned char new_rng_state[sizeof seed];
-        unsigned i;
-
-        for (i = 0; i < sizeof seed; i++) {
-            new_rng_state[i] = (unsigned char) (seed & 0xFF);
-            seed >>= 8;
-        }
-
-        isaac64_init(&nle_lgen_state, new_rng_state,
-                    (int) sizeof seed);
-
+        nle_init_lgen_state(settings.initial_seeds.lgen_seed);
         lgen_initialised = true;
     } else {
-        lgen_initialised = false; 
+        lgen_initialised = false;
     }
+    /* Even if we didn't use it, stash the seed */
+    nle_seeds[2] = settings.initial_seeds.lgen_seed;
 }
 
 void nle_swap_to_lgen(void)
@@ -94,7 +99,7 @@ void nle_swap_to_core(void)
 
 void
 nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
-             boolean reseed)
+    unsigned long lgen, boolean reseed)
 {
     /* Keep up to date with rnglist[] in rnd.c. */
     set_random(core, rn2);
@@ -102,15 +107,18 @@ nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
 
     /* Determines logic in reseed_random() in hacklib.c. */
     has_strong_rngseed = reseed;
-};
 
-extern unsigned long nle_seeds[];
+    nle_init_lgen_state(lgen);
+    lgen_initialised = true;
+    nle_seeds[2] = lgen;
+};
 
 void
 nle_get_seed(nle_ctx_t *nle, unsigned long *core, unsigned long *disp,
-             boolean *reseed)
+    unsigned long *lgen, boolean *reseed)
 {
     *core = nle_seeds[0];
     *disp = nle_seeds[1];
     *reseed = has_strong_rngseed;
+    *lgen = nle_seeds[2];
 }
