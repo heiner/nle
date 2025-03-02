@@ -492,21 +492,28 @@ class NLE(gym.Env):
 
         Returns:
             [tuple] The seeds supplied, in the form (core, disp, reseed).
+            or
+            [tuple] The seeds including the lgen seed if passed (core, disp,
+                    reseed, lgen)
         """
         if core is None:
             core = self._random.randrange(sys.maxsize)
         if disp is None:
             disp = self._random.randrange(sys.maxsize)
+        self.nethack.set_initial_seeds(core, disp, reseed, lgen)
         if lgen is None:
-            lgen = self._random.randrange(sys.maxsize)
-        self.nethack.set_initial_seeds(core, disp, lgen, reseed)
-        return (core, disp, lgen, reseed)
+            result = (core, disp, reseed)
+        else:
+            result = (core, disp, reseed, lgen)
+        return result
 
     def get_seeds(self):
         """Returns current seeds.
 
         Returns:
-            (tuple): Current NetHack (core, disp, reseed, lgen) state.
+            (tuple): Current NetHack (core, disp, reseed) state.
+            or
+            (tuple): Current NetHack seeds and lgen if previously set.
         """
         return self.nethack.get_current_seeds()
 

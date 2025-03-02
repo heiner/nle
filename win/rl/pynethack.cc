@@ -275,14 +275,14 @@ class Nethack
     }
 
     void
-    set_initial_seeds(unsigned long core, unsigned long disp, unsigned long lgen, bool reseed)
+    set_initial_seeds(unsigned long core, unsigned long disp,  bool reseed, unsigned long lgen, bool use_lgen_seed)
     {
         settings_.initial_seeds.seeds[0] = core;
         settings_.initial_seeds.seeds[1] = disp;
         settings_.initial_seeds.reseed = reseed;
         settings_.initial_seeds.use_init_seeds = true;
         settings_.initial_seeds.lgen_seed = lgen;
-        settings_.initial_seeds.use_lgen_seed = true;
+        settings_.initial_seeds.use_lgen_seed = use_lgen_seed;
     }
 
     void
@@ -293,17 +293,17 @@ class Nethack
         nle_set_seed(nle_, core, disp, reseed, lgen);
     }
 
-    std::tuple<unsigned long, unsigned long, unsigned long, bool>
+    std::tuple<unsigned long, unsigned long, bool, unsigned long>
     get_seeds()
     {
         if (!nle_)
             throw std::runtime_error("get_seed called without reset()");
-        std::tuple<unsigned long, unsigned long, unsigned long, bool> result;
+        std::tuple<unsigned long, unsigned long, bool, unsigned long> result;
         char
             reseed; /* NetHack's booleans are not necessarily C++ bools ... */
         nle_get_seed(nle_, &std::get<0>(result), &std::get<1>(result),
-                     &std::get<2>(result), &reseed);
-        std::get<3>(result) = reseed;
+                        &reseed, &std::get<3>(result));
+        std::get<2>(result) = reseed;
         return result;
     }
 

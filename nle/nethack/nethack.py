@@ -124,13 +124,13 @@ def tty_render(chars, colors, cursor=None):
     """Returns chars as string with ANSI escape sequences.
 
     Args:
-      chars: A row x columns numpy array of chars.
-      colors: A numpy array of colors (0-15), same shape as chars.
-      cursor: An optional (row, column) index for the cursor,
+    chars: A row x columns numpy array of chars.
+    colors: A numpy array of colors (0-15), same shape as chars.
+    cursor: An optional (row, column) index for the cursor,
         displayed as underlined.
 
     Returns:
-      A string with chars decorated by ANSI escape sequences.
+    A string with chars decorated by ANSI escape sequences.
     """
     rows, cols = chars.shape
     if cursor is None:
@@ -280,8 +280,11 @@ class Nethack:
         self._dl = None
         self._tempdir = None
 
-    def set_initial_seeds(self, core, disp, lgen, reseed=False):
-        self._pynethack.set_initial_seeds(core, disp, lgen, reseed)
+    def set_initial_seeds(self, core, disp, reseed=False, lgen=None):
+        if lgen is None:
+            self._pynethack.set_initial_seeds(core, disp, reseed, 0, False)
+        else:
+            self._pynethack.set_initial_seeds(core, disp, reseed, lgen, True)
 
     def set_current_seeds(self, core=None, disp=None, reseed=False, lgen=False):
         """Sets the seeds of NetHack right now.
@@ -317,7 +320,10 @@ class Nethack:
         return self._pynethack.set_seeds(core, disp, reseed, lgen)
 
     def get_current_seeds(self):
-        return self._pynethack.get_seeds()
+        seeds = self._pynethack.get_seeds()
+        if seeds[3] == 0:
+            seeds = seeds[:3]
+        return seeds
 
     def in_normal_game(self):
         return self._pynethack.in_normal_game()

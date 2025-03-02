@@ -99,7 +99,7 @@ void nle_swap_to_core(void)
 
 void
 nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
-    unsigned long lgen, boolean reseed)
+    boolean reseed, unsigned long lgen)
 {
     /* Keep up to date with rnglist[] in rnd.c. */
     set_random(core, rn2);
@@ -115,7 +115,7 @@ nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
 
 void
 nle_get_seed(nle_ctx_t *nle, unsigned long *core, unsigned long *disp,
-    unsigned long *lgen, boolean *reseed)
+    boolean *reseed, unsigned long *lgen)
 {
     *core = nle_seeds[0];
     *disp = nle_seeds[1];
