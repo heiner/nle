@@ -192,7 +192,7 @@ For information on how to download NLD-AA and NLD-NAO, see the dataset doc [here
 Otherwise checkout the tutorial Colab notebook [here](https://colab.research.google.com/drive/1GRP15SbOEDjbyhJGMDDb2rXAptRQztUD?usp=sharing).
 
 # Papers using the NetHack Learning Environment
-
+- Paglieri et al. [BALROG: Benchmarking Agentic LLM and VLM Reasoning On Games](https://arxiv.org/abs/2411.13543) (UCL, IDEAS NCBR, NYU, Oxford, Anthropic, ICLR 2025)
 - Klissarov et al. [MaestroMotif: Skill Design from Artificial Intelligence Feedback](https://arxiv.org/abs/2412.08542) (Mila, FAIR, UT Austin, Alberta, Amii, ICLR 2025) 
 - Klissarov et al. [Motif: Intrinsic Motivation from Artificial Intelligence Feedback](https://arxiv.org/abs/2310.00166) (Mila, FAIR, UT Austin, ICLR 2024) 
 - Izumiya and Simo-Serra [Inventory Management with Attention-Based Meta Actions](https://esslab.jp/~ess/publications/IzumiyaCOG2021.pdf) (Waseda University, CoG 2021).
