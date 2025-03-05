@@ -281,12 +281,9 @@ class Nethack:
         self._tempdir = None
 
     def set_initial_seeds(self, core, disp, reseed=False, lgen=None):
-        if lgen is None:
-            self._pynethack.set_initial_seeds(core, disp, reseed, 0, False)
-        else:
-            self._pynethack.set_initial_seeds(core, disp, reseed, lgen, True)
+        self._pynethack.set_initial_seeds(core, disp, reseed, lgen)
 
-    def set_current_seeds(self, core=None, disp=None, reseed=False, lgen=False):
+    def set_current_seeds(self, core=None, disp=None, reseed=False, lgen=None):
         """Sets the seeds of NetHack right now.
 
         If either of the three arguments is None, its current value will be
@@ -320,10 +317,7 @@ class Nethack:
         return self._pynethack.set_seeds(core, disp, reseed, lgen)
 
     def get_current_seeds(self):
-        seeds = self._pynethack.get_seeds()
-        if seeds[3] == 0:
-            seeds = seeds[:3]
-        return seeds
+        return self._pynethack.get_seeds()
 
     def in_normal_game(self):
         return self._pynethack.in_normal_game()

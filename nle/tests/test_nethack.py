@@ -137,7 +137,7 @@ class TestNetHack:
         # Could fail on a system without a good source of randomness:
         assert game.get_current_seeds()[2] is True
         game.set_current_seeds(core=42, disp=666)
-        assert game.get_current_seeds() == (42, 666, False)
+        assert game.get_current_seeds() == (42, 666, False, 0)
 
 
 class TestNetHackFurther:

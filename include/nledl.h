@@ -24,6 +24,6 @@ void nle_reset(nledl_ctx *, nle_obs *, FILE *, nle_settings *);
 void nle_end(nledl_ctx *);
 
 void nle_set_seed(nledl_ctx *, unsigned long, unsigned long, char, unsigned long);
-void nle_get_seed(nledl_ctx *, unsigned long *, unsigned long *, char *, unsigned long *);
+void nle_get_seed(nledl_ctx *, unsigned long *, unsigned long *, char *, unsigned long *, bool *);
 
 #endif /* NLEDL_H */

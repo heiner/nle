@@ -115,10 +115,11 @@ nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
 
 void
 nle_get_seed(nle_ctx_t *nle, unsigned long *core, unsigned long *disp,
-    boolean *reseed, unsigned long *lgen)
+    boolean *reseed, unsigned long *lgen, bool *lgen_in_use)
 {
     *core = nle_seeds[0];
     *disp = nle_seeds[1];
     *reseed = has_strong_rngseed;
     *lgen = nle_seeds[2];
+    *lgen_in_use = lgen_initialised;
 }
