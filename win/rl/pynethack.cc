@@ -304,6 +304,8 @@ class Nethack
         try {
             lgen = pyLgen.cast<unsigned long>();
         } catch (py::cast_error) {
+            /* Is 0 a valid seed number? Does nothing even matter? 
+               A philosophical question for another day and time. */
             lgen = 0;
         }
         nle_set_seed(nle_, core, disp, reseed, lgen);

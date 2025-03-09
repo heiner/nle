@@ -323,6 +323,54 @@ class TestGymEnvRollout:
         np.testing.assert_equal(obs0, obs1)
         compare_rollouts(env0, env1, rollout_len)
 
+    def test_seed_lgen(self, env_name, rollout_len):
+        """Tests that the lgen seed returns deterministic dungeon structure"""
+        if env_name.startswith("NetHackChallenge"):
+            pytest.skip("Not running seed test on NetHackChallenge")
+
+        env = gym.make(env_name)
+        env.unwrapped.seed(lgen=1)
+        obs = env.reset()
+
+        assert env.unwrapped.get_seeds()[3] == 1
+
+        # check for the first room the agent appears.
+        # note: even with level generation, some aspects
+        # of the contents of the rooms are random
+        assert obs[0]["chars"][15][1] == ord("-")
+        assert obs[0]["chars"][16][6] == ord(".")
+        assert obs[0]["chars"][16][10] == ord(".")
+        assert obs[0]["chars"][18][10] == ord("+")
+
+    def test_seeds_with_lgen(self, env_name, rollout_len):
+        """Tests that the lgen seed returns deterministic dungeon structure,
+        when passed alongside other NetHack seed values"""
+        if env_name.startswith("NetHackChallenge"):
+            pytest.skip("Not running seed test on NetHackChallenge")
+
+        env = gym.make(env_name)
+        env.unwrapped.seed(1234, 5678, False, 1)
+        obs = env.reset()
+
+        assert env.unwrapped.get_seeds()[3] == 1
+
+        # check for the first room the agent appears.
+        # note: even with level generation, some aspects
+        # of the contents of the rooms are random
+        assert obs[0]["chars"][15][1] == ord("-")
+        assert obs[0]["chars"][16][6] == ord(".")
+        assert obs[0]["chars"][16][10] == ord(".")
+        assert obs[0]["chars"][18][10] == ord("+")
+
+    # Further level-generation tests:
+    # There should be a test that compares level two in multiple
+    # rollouts. That requires an agent that can successfully and
+    # always find the stairs and descend to the second level. To
+    # say nothing about deeper levels of the dungeon! For now it
+    # doesn't exist, and so remains an active area of research.
+    #
+    # Left as an exercise for the student?
+
     def test_render_ansi(self, env_name, rollout_len):
         env = gym.make(env_name, render_mode="ansi")
         env.reset()
