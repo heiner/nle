@@ -368,5 +368,5 @@ class NetHackChallenge(NetHackScore):
             or self._no_progress_count >= self.no_progress_timeout
         )
 
-    def seed(self, core=None, disp=None, reseed=True):
+    def seed(self, core=None, disp=None, reseed=True, lgen=None):
         raise RuntimeError("NetHackChallenge doesn't allow seed changes")
