@@ -491,10 +491,7 @@ class NLE(gym.Env):
                 NetHack generates new levels.
 
         Returns:
-            [tuple] The seeds supplied, in the form (core, disp, reseed).
-            or
-            [tuple] The seeds including the lgen seed if passed (core, disp,
-                    reseed, lgen)
+            [tuple] The seeds supplied, in the form (core, disp, reseed, lgen).
         """
         if core is None:
             core = self._random.randrange(sys.maxsize)
