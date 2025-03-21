@@ -323,7 +323,7 @@ class Nethack
             result;
 
         /* NetHack's booleans are not necessarily C++ bools ... */
-        char reseed;  
+        char reseed;
 
         nle_get_seed(nle_, &std::get<0>(result), &std::get<1>(result),
                      &reseed, &std::get<3>(result), &std::get<4>(result));
