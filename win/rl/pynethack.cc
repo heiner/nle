@@ -275,16 +275,17 @@ class Nethack
     }
 
     void
-    set_initial_seeds(unsigned long core, unsigned long disp,  bool reseed, py::object pyLgen)
+    set_initial_seeds(unsigned long core, unsigned long disp, bool reseed,
+                      py::object pyLgen)
     {
         settings_.initial_seeds.seeds[0] = core;
         settings_.initial_seeds.seeds[1] = disp;
         settings_.initial_seeds.reseed = reseed;
         settings_.initial_seeds.use_init_seeds = true;
 
-        /* The level generation seed's optional so may be passed as a Python None
-           object, if there isn't any seed. Also catches other rubbish that might
-           be passed in. */
+        /* The level generation seed's optional so may be passed as a Python
+           None object, if there isn't any seed. Also, catches other rubbish
+           that might be passed in. */
         try {
             settings_.initial_seeds.lgen_seed = pyLgen.cast<unsigned long>();
             settings_.initial_seeds.use_lgen_seed = true;
@@ -295,7 +296,8 @@ class Nethack
     }
 
     void
-    set_seeds(unsigned long core, unsigned long disp, bool reseed, py::object pyLgen)
+    set_seeds(unsigned long core, unsigned long disp, bool reseed,
+              py::object pyLgen)
     {
         if (!nle_)
             throw std::runtime_error("set_seed called without reset()");
@@ -304,7 +306,7 @@ class Nethack
         try {
             lgen = pyLgen.cast<unsigned long>();
         } catch (py::cast_error) {
-            /* Is 0 a valid seed number? Does nothing even matter? 
+            /* Is 0 a valid seed number? Does nothing even matter?
                A philosophical question for another day and time. */
             lgen = 0;
         }
@@ -316,20 +318,23 @@ class Nethack
     {
         if (!nle_)
             throw std::runtime_error("get_seed called without reset()");
-        
-        std::tuple<unsigned long, unsigned long, bool, unsigned long, bool> result;
-        char reseed; /* NetHack's booleans are not necessarily C++ bools ... */
-        
+
+        std::tuple<unsigned long, unsigned long, bool, unsigned long, bool>
+            result;
+
+        /* NetHack's booleans are not necessarily C++ bools ... */
+        char reseed; 
+
         nle_get_seed(nle_, &std::get<0>(result), &std::get<1>(result),
-                        &reseed, &std::get<3>(result), &std::get<4>(result));
-        
+                     &reseed, &std::get<3>(result), &std::get<4>(result));
+
         /* Package up the seeds as the level generation seed is optional */
         std::tuple<unsigned long, unsigned long, bool, py::object> seeds;
         std::get<0>(seeds) = std::get<0>(result);
         std::get<1>(seeds) = std::get<1>(result);
         std::get<2>(seeds) = reseed;
         /* Only want to return the level generation seed if it's in use */
-        if(std::get<4>(result)) {
+        if (std::get<4>(result)) {
             std::get<3>(seeds) = py::cast(std::get<3>(result));
         } else {
             std::get<3>(seeds) = py::none();

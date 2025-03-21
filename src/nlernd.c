@@ -4,7 +4,7 @@
 
 /* See rng.c. */
 struct rnglist_t {
-    int FDECL((*fn), (int));
+    int FDECL((*fn), (int) );
     boolean init;
     isaac64_ctx rng_state;
 };
@@ -37,15 +37,20 @@ init_random(int FDECL((*fn), (int) ))
     }
 }
 
-unsigned long nle_seeds[] = {0L, 0L, 0L};
+unsigned long nle_seeds[] = { 0L, 0L, 0L };
 
-static struct isaac64_ctx nle_lgen_state; /* State of the level generation RNG */
-static struct isaac64_ctx nle_core_state; /* State of the core RNG */
+/* State of the level generation RNG */
+static struct isaac64_ctx nle_lgen_state;
+
+/* State of the core RNG */
+static struct isaac64_ctx nle_core_state;
+
 static bool lgen_initialised = false;
 
 /* Seeding function to initialise the fixed-level rng state.
    Borrowed from init_isaac64 in NetHack's rnd.c */
-void nle_init_lgen_state(unsigned long seed)
+void
+nle_init_lgen_state(unsigned long seed)
 {
     unsigned char new_rng_state[sizeof seed];
     unsigned i;
@@ -55,13 +60,13 @@ void nle_init_lgen_state(unsigned long seed)
         seed >>= 8;
     }
 
-    isaac64_init(&nle_lgen_state, new_rng_state,
-                (int) sizeof seed);
+    isaac64_init(&nle_lgen_state, new_rng_state, (int) sizeof seed);
 }
 
-void nle_init_lgen_rng()
+void
+nle_init_lgen_rng()
 {
-    if(settings.initial_seeds.use_lgen_seed) {
+    if (settings.initial_seeds.use_lgen_seed) {
         nle_init_lgen_state(settings.initial_seeds.lgen_seed);
         lgen_initialised = true;
     } else {
@@ -71,22 +76,24 @@ void nle_init_lgen_rng()
     nle_seeds[2] = settings.initial_seeds.lgen_seed;
 }
 
-void nle_swap_to_lgen(void)
+void
+nle_swap_to_lgen(void)
 {
-    if(lgen_initialised) {
+    if (lgen_initialised) {
         int core_rng = whichrng(rn2);
 
         /* stash the current core state */
         nle_core_state = rnglist[core_rng].rng_state;
-    
+
         /* copy the current lgen state */
-        rnglist[core_rng].rng_state = nle_lgen_state;        
+        rnglist[core_rng].rng_state = nle_lgen_state;
     }
 }
 
-void nle_swap_to_core(void)
+void
+nle_swap_to_core(void)
 {
-    if(lgen_initialised) {
+    if (lgen_initialised) {
         int core_rng = whichrng(rn2);
 
         /* stash the current lgen state */
@@ -99,7 +106,7 @@ void nle_swap_to_core(void)
 
 void
 nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
-    boolean reseed, unsigned long lgen)
+             boolean reseed, unsigned long lgen)
 {
     /* Keep up to date with rnglist[] in rnd.c. */
     set_random(core, rn2);
@@ -115,7 +122,7 @@ nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
 
 void
 nle_get_seed(nle_ctx_t *nle, unsigned long *core, unsigned long *disp,
-    boolean *reseed, unsigned long *lgen, bool *lgen_in_use)
+             boolean *reseed, unsigned long *lgen, bool *lgen_in_use)
 {
     *core = nle_seeds[0];
     *disp = nle_seeds[1];
