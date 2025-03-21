@@ -377,7 +377,7 @@ class Nethack
                              ttyrec ? ttyrec : ttyrec_, &settings_);
         } else
             nle_reset(nle_, &obs_, ttyrec, &settings_);
-        
+
         /* Once the seeds have been used, prevent them being reused. */
         settings_.initial_seeds.use_init_seeds = false;
         settings_.initial_seeds.use_lgen_seed = false;
