@@ -45,7 +45,9 @@ static struct isaac64_ctx nle_lgen_state;
 /* State of the core RNG */
 static struct isaac64_ctx nle_core_state;
 
+/* Some flags to help  manage the lgen seed */
 static bool lgen_initialised = false;
+static bool lgen_active = false;
 
 /* Seeding function to initialise the fixed-level rng state.
    Borrowed from init_isaac64 in NetHack's rnd.c */
@@ -79,7 +81,7 @@ nle_init_lgen_rng()
 void
 nle_swap_to_lgen(void)
 {
-    if (lgen_initialised) {
+    if (lgen_initialised && !lgen_active) {
         int core_rng = whichrng(rn2);
 
         /* stash the current core state */
@@ -87,13 +89,18 @@ nle_swap_to_lgen(void)
 
         /* copy the current lgen state */
         rnglist[core_rng].rng_state = nle_lgen_state;
+
+        /* since we want nle_swap_to_lgen and swap_to_core to be
+           called in the correct sequence we ignore subsequent
+           calls to this function. */
+        lgen_active = true;
     }
 }
 
 void
 nle_swap_to_core(void)
 {
-    if (lgen_initialised) {
+    if (lgen_initialised && lgen_active) {
         int core_rng = whichrng(rn2);
 
         /* stash the current lgen state */
@@ -101,6 +108,11 @@ nle_swap_to_core(void)
 
         /* restore the core state */
         rnglist[core_rng].rng_state = nle_core_state;
+
+        /* since we want nle_swap_to_lgen and swap_to_core to be
+           called in the correct sequence we ignore subsequent
+           calls to this function. */
+        lgen_active = false;
     }
 }
 

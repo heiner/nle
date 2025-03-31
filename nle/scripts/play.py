@@ -95,7 +95,7 @@ def play():
             render_mode=FLAGS.render_mode,
         )
         if FLAGS.seeds is not None:
-            env.unwrapped.seed(FLAGS.seeds)
+            env.unwrapped.seed(*FLAGS.seeds)
 
     obs, reset_info = env.reset()
 
