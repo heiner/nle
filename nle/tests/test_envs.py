@@ -335,12 +335,11 @@ class TestGymEnvRollout:
         assert env.unwrapped.get_seeds()[3] == 1
 
         # check for the first room the agent appears.
-        # note: even with level generation, some aspects
-        # of the contents of the rooms are random
-        assert obs[0]["chars"][15][1] == ord("-")
-        assert obs[0]["chars"][16][6] == ord(".")
-        assert obs[0]["chars"][16][10] == ord(".")
-        assert obs[0]["chars"][18][10] == ord("+")
+        assert obs[0]["chars"][5][68] == ord("-")
+        assert obs[0]["chars"][8][69] == ord(".")
+        assert obs[0]["chars"][7][68] == ord(".")
+        assert obs[0]["chars"][7][67] == ord("+")
+        assert obs[0]["chars"][8][71] == ord("@")
 
     def test_seeds_with_lgen(self, env_name, rollout_len):
         """Tests that the lgen seed returns deterministic dungeon structure,
@@ -355,12 +354,11 @@ class TestGymEnvRollout:
         assert env.unwrapped.get_seeds()[3] == 1
 
         # check for the first room the agent appears.
-        # note: even with level generation, some aspects
-        # of the contents of the rooms are random
-        assert obs[0]["chars"][15][1] == ord("-")
-        assert obs[0]["chars"][16][6] == ord(".")
-        assert obs[0]["chars"][16][10] == ord(".")
-        assert obs[0]["chars"][18][10] == ord("+")
+        assert obs[0]["chars"][5][68] == ord("-")
+        assert obs[0]["chars"][8][69] == ord(".")
+        assert obs[0]["chars"][7][68] == ord(".")
+        assert obs[0]["chars"][7][67] == ord("+")
+        assert obs[0]["chars"][8][71] == ord("@")
 
     # Further level-generation tests:
     # There should be a test that compares level two in multiple
