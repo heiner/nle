@@ -39,20 +39,36 @@ init_random(int FDECL((*fn), (int) ))
 
 unsigned long nle_seeds[] = { 0L, 0L, 0L };
 
-/* State of the level generation RNG */
-static struct isaac64_ctx nle_lgen_state;
+/* We define the number of dungeons explicitly here. 
+   NetHack works it out from the "dungeon.def" file,
+   sadly after already sampling random numbers. This
+   means you have to make sure that if the number of
+   dungeons changes in the future then this needs to
+   be kept in sync. */
+#define NLE_NUM_DUNGEONS 8
 
-/* State of the core RNG */
+/* Base LGEN RNG state, initialised via the seed &
+   used in turn to sample seed values for the RNGs
+   for each dungeon. */
+static struct isaac64_ctx nle_lgen_base;
+
+/* RNG States for level generation, one for each dungeon */ 
+static struct isaac64_ctx nle_lgen_state[NLE_NUM_DUNGEONS];
+
+/* State of the NetHack CORE RNG, used to remember what
+   it was before we created the level and then restored
+   after the level is ready. This allows for randomness
+   during exploration / combat in-level. */
 static struct isaac64_ctx nle_core_state;
 
-/* Some flags to help  manage the lgen seed */
+/* Some flags to help manage the lgen seed */
 static bool lgen_initialised = false;
 static bool lgen_active = false;
 
-/* Seeding function to initialise the fixed-level rng state.
+/* Seeding function to initialise a fixed-level RNG state.
    Borrowed from init_isaac64 in NetHack's rnd.c */
 void
-nle_init_lgen_state(unsigned long seed)
+nle_init_lgen_state(unsigned long seed, struct isaac64_ctx *state)
 {
     unsigned char new_rng_state[sizeof seed];
     unsigned i;
@@ -62,14 +78,21 @@ nle_init_lgen_state(unsigned long seed)
         seed >>= 8;
     }
 
-    isaac64_init(&nle_lgen_state, new_rng_state, (int) sizeof seed);
+    isaac64_init(state, new_rng_state, (int) sizeof seed);
 }
 
 void
 nle_init_lgen_rng()
 {
     if (settings.initial_seeds.use_lgen_seed) {
-        nle_init_lgen_state(settings.initial_seeds.lgen_seed);
+        /* initialise the base state which will be used 
+           for seeding the RNGs for the dungeons */
+        nle_init_lgen_state(settings.initial_seeds.lgen_seed, &nle_lgen_base);
+
+        /* generate a new RNG for each of the dungeons */
+        for(int i = 0; i < NLE_NUM_DUNGEONS; i++)
+            nle_init_lgen_state(isaac64_next_uint64(&nle_lgen_base), &(nle_lgen_state[i]));
+
         lgen_initialised = true;
     } else {
         lgen_initialised = false;
@@ -79,7 +102,7 @@ nle_init_lgen_rng()
 }
 
 void
-nle_swap_to_lgen(void)
+nle_swap_to_lgen(int dungeon_num)
 {
     if (lgen_initialised && !lgen_active) {
         int core_rng = whichrng(rn2);
@@ -88,7 +111,7 @@ nle_swap_to_lgen(void)
         nle_core_state = rnglist[core_rng].rng_state;
 
         /* copy the current lgen state */
-        rnglist[core_rng].rng_state = nle_lgen_state;
+        rnglist[core_rng].rng_state = nle_lgen_state[dungeon_num];
 
         /* since we want nle_swap_to_lgen and swap_to_core to be
            called in the correct sequence we ignore subsequent
@@ -98,13 +121,13 @@ nle_swap_to_lgen(void)
 }
 
 void
-nle_swap_to_core(void)
+nle_swap_to_core(int dungeon_num)
 {
     if (lgen_initialised && lgen_active) {
         int core_rng = whichrng(rn2);
 
         /* stash the current lgen state */
-        nle_lgen_state = rnglist[core_rng].rng_state;
+        nle_lgen_state[dungeon_num] = rnglist[core_rng].rng_state;
 
         /* restore the core state */
         rnglist[core_rng].rng_state = nle_core_state;
@@ -127,7 +150,7 @@ nle_set_seed(nle_ctx_t *nle, unsigned long core, unsigned long disp,
     /* Determines logic in reseed_random() in hacklib.c. */
     has_strong_rngseed = reseed;
 
-    nle_init_lgen_state(lgen);
+    nle_init_lgen_state(lgen, &nle_lgen_base);
     lgen_initialised = true;
     nle_seeds[2] = lgen;
 };

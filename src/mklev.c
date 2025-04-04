@@ -1000,7 +1000,7 @@ mklev()
     reseed_random(rn2_on_display_rng);
 
     /* NLE: Use the level generation RNG if required */
-    nle_swap_to_lgen();
+    nle_swap_to_lgen(u.uz.dnum);
 
     init_mapseen(&u.uz);
     if (getbones())
@@ -1038,7 +1038,7 @@ mklev()
     dnstairs_room = upstairs_room = sstairs_room = (struct mkroom *) 0;
 
     /* NLE: Restore CORE RNG state if required */
-    nle_swap_to_core();
+    nle_swap_to_core(u.uz.dnum);
 
     reseed_random(rn2);
     reseed_random(rn2_on_display_rng);

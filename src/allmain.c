@@ -26,8 +26,8 @@ STATIC_DCL void FDECL(debug_fields, (const char *));
 extern int FDECL(nle_spawn_monsters, ());
 
 /* NLE RNG selection functions */
-extern void FDECL(nle_swap_to_lgen, ());
-extern void FDECL(nle_swap_to_core, ());
+extern void FDECL(nle_swap_to_lgen, (int));
+extern void FDECL(nle_swap_to_core, (int));
 
 void
 moveloop(resuming)
@@ -606,7 +606,7 @@ newgame()
         mvitals[i].mvflags = mons[i].geno & G_NOCORPSE;
 
     /* Use lgen for game / dungeon initialisation */
-    nle_swap_to_lgen();
+    nle_swap_to_lgen(0);
 
     init_objects(); /* must be before u_init() */
 
@@ -659,7 +659,7 @@ newgame()
     welcome(TRUE);
 
     /* Restore CORE RNG */
-    nle_swap_to_core();
+    nle_swap_to_core(0);
 
     return;
 }
