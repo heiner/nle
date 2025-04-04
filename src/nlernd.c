@@ -39,7 +39,7 @@ init_random(int FDECL((*fn), (int) ))
 
 unsigned long nle_seeds[] = { 0L, 0L, 0L };
 
-/* We define the number of dungeons explicitly here. 
+/* We define the number of dungeons explicitly here.
    NetHack works it out from the "dungeon.def" file,
    sadly after already sampling random numbers. This
    means you have to make sure that if the number of
@@ -52,7 +52,7 @@ unsigned long nle_seeds[] = { 0L, 0L, 0L };
    for each dungeon. */
 static struct isaac64_ctx nle_lgen_base;
 
-/* RNG States for level generation, one for each dungeon */ 
+/* RNG States for level generation, one for each dungeon */
 static struct isaac64_ctx nle_lgen_state[NLE_NUM_DUNGEONS];
 
 /* State of the NetHack CORE RNG, used to remember what
@@ -85,13 +85,14 @@ void
 nle_init_lgen_rng()
 {
     if (settings.initial_seeds.use_lgen_seed) {
-        /* initialise the base state which will be used 
+        /* initialise the base state which will be used
            for seeding the RNGs for the dungeons */
         nle_init_lgen_state(settings.initial_seeds.lgen_seed, &nle_lgen_base);
 
         /* generate a new RNG for each of the dungeons */
-        for(int i = 0; i < NLE_NUM_DUNGEONS; i++)
-            nle_init_lgen_state(isaac64_next_uint64(&nle_lgen_base), &(nle_lgen_state[i]));
+        for (int i = 0; i < NLE_NUM_DUNGEONS; i++)
+            nle_init_lgen_state(isaac64_next_uint64(&nle_lgen_base),
+                                &(nle_lgen_state[i]));
 
         lgen_initialised = true;
     } else {

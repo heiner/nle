@@ -338,7 +338,7 @@ class TestGymEnvRollout:
         assert obs[0]["chars"][3][61] == ord("-")
         assert obs[0]["chars"][4][51] == ord(".")
         assert obs[0]["chars"][5][59] == ord(".")
-        assert obs[0]["chars"][7][59] == ord("+")
+        assert obs[0]["chars"][7][65] == ord("|")
         assert obs[0]["chars"][7][51] == ord("@")
 
     def test_seeds_with_lgen(self, env_name, rollout_len):
