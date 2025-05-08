@@ -57,7 +57,7 @@ build = "cp{38,39,310,311,312}-manylinux*"
 before-all = "rm -rf {project}/build {project}/*.so {project}/CMakeCache.txt && yum install -y autoconf bison cmake flex git libtool"
 
 # Build for the architecure of the runner in the GitHub Actions workflow:
-# ubuntu-20.04 -> x86_64
+# ubuntu-latest -> x86_64
 # ubuntu-24.04-arm -> aarch64
 archs = "native"
 
